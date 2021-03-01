@@ -271,9 +271,99 @@ export default function Disipline({ navigation }) {
           {navigation.getParam("descdisci")}
         </Text>
       </View>
+      <View>
+        <VictoryChart>
+          <VictoryBar data={dataProgress.a} />
+          <VictoryBar data={dataProgress.b} />
+          <VictoryBar
+            data={dataProgress.planned}
+            style={{
+              data: { fill: "#2E58BF", strokeWidth: 30 },
+              paddingLeft: 10,
+            }}
+          />
+          <VictoryBar
+            data={dataProgress.actual}
+            style={{
+              data: { fill: "#F00", strokeWidth: 30 },
+            }}
+          />
+          <VictoryBar data={dataProgress.c} />
+          <VictoryBar data={dataProgress.d} />
+        </VictoryChart>
+      </View>
+      <View>
+        <PieChart
+          data={ProgressData}
+          width={screenWidth}
+          height={210}
+          chartConfig={chartConfig}
+          accessor={"population"}
+          backgroundColor={"transparent"}
+          paddingLeft={"15"}
+          center={[5, 5]}
+          absolute
+        />
+      </View>
+      <View>
+        <Text
+          style={{
+            fontWeight: "bold",
+            marginBottom: 20,
+            fontSize: 15,
+            color: "#2DAAF1",
+          }}
+        >
+          {" "}
+          Date Fin Planifiée :{" "}
+          <Text style={{ marginLeft: 10, textAlign: "right" }}>
+            {" "}
+            {finalDatePl}{" "}
+          </Text>
+        </Text>
+        <Text
+          style={{
+            fontWeight: "bold",
+            marginBottom: 20,
+            fontSize: 15,
+            color: "#2DAAF1",
+          }}
+        >
+          {" "}
+          Date Fin Actuel :{" "}
+          <Text style={{ marginLeft: 10, textAlign: "right" }}>
+            {" "}
+            {finalDateAct}
+          </Text>
+        </Text>
+        <Text
+          style={{
+            fontWeight: "bold",
+            marginBottom: 20,
+            fontSize: 15,
+            color: "#2DAAF1",
+          }}
+        >
+          {" "}
+          Total Float :{" "}
+          <Text style={{ marginLeft: 10, textAlign: "right" }}>
+            {TotalFloat} Jours
+          </Text>
+        </Text>
+      </View>
+      <View>
+        {navigation.getParam("descdisci") === "Engineering Progress" ||
+        navigation.getParam("descdisci") === "procurement Progress" ||
+        navigation.getParam("descdisci") === "Construction Progress" ? (
+          <Button
+            style={{ marginTop: 50 }}
+            title="More details"
+            //onPress={HandleShowDetailsProcurement}
+          />
+        ) : null}
+      </View>
     </View>
   );
-  
 }
 const styles = StyleSheet.create({
   Header: {
@@ -290,4 +380,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 });
- //navigation.getParam("descdisci"), navigation.getParam("descdisci");
+//navigation.getParam("descdisci"), navigation.getParam("descdisci");
