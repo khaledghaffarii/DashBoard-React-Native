@@ -8,15 +8,35 @@ import Auth from './Auth';
 import ProjectShow from "../screens/ProjectShow";
 import Project from '../screens/Project'
 import Disipline from "../screens/Disipline";
-export default createAppContainer(
-  createSwitchNavigator({
-    // You could add another route here for authentication.
-    // Read more at https://reactnavigation.org/docs/en/auth-flow.html
-    Auth,
-    ProjectShow,
-    Project,
-    Disipline,
-    //Overview,
-    Main: Screens,
-  })
-);
+import { createStackNavigator } from 'react-navigation-stack';
+
+
+ 
+
+const screens = {
+  All_Project: {
+    screen: Project,
+  },
+  ProjectShow: {
+    screen: ProjectShow,
+  },
+  Disipline: {
+    screen: Disipline,
+  },
+};
+const AppNavigator = createStackNavigator(screens);
+
+export default createAppContainer(AppNavigator);
+  // You could add another route here for authentication.
+  // Read more at https://reactnavigation.org/docs/en/auth-flow.html
+
+
+
+   // createSwitchNavigator({
+  //   Auth,
+  //   ProjectShow,
+  //   Project,
+  //   Disipline,
+
+  //   Main: Screens,
+  // })
