@@ -263,7 +263,7 @@ export default function Disipline({ navigation }) {
           name="arrowleft"
           size={24}
           color="black"
-          onPress={() => navigation.navigate("ProjectShow")}
+          onPress={() => navigation.navigate("Project")}
           style={{ marginBottom: 5 }}
         />
 
