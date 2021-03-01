@@ -62,10 +62,10 @@ export default function Project({ navigation, props }) {
   // console.log(dataProject);
   // //const { itemId } = route.params;
   return (
-    <View>
-      <View style={styles.Header}>
+    <View style={styles.content}>
+      {/* <View style={styles.Header}>
         <Text style={styles.title}>All_Project</Text>
-      </View>
+      </View> */}
 
       {/* <View style={styles.searchSection}>
         <Icon style={styles.searchIcon} name="search" size={20} color="#000" />
@@ -83,7 +83,7 @@ export default function Project({ navigation, props }) {
         style={{ marginVertical: 40 }}
         showsVerticalScrollIndicator={false}
       >
-        <View>
+        <View style={styles.content}>
           {Object.values(dataProject)
             .filter((val) => {
               if (searchTerm == "") {
@@ -96,11 +96,11 @@ export default function Project({ navigation, props }) {
             })
             .map((dataProjects) => (
               <TouchableOpacity
-                onPress={() => navigation.navigate("ProjectShow", dataProjects)                                   }
-              >
+                onPress={() => navigation.navigate("ProjectShow", dataProjects)}
+                >
                 <Text style={styles.container}>
                   {" "}
-                  { dataProjects.projectname }
+                  {dataProjects.projectname}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -113,12 +113,16 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     marginTop: 10,
-    backgroundColor: "#f5fcff",
-    borderBottomWidth: 1,
+    backgroundColor: "white",
+    borderBottomWidth: 2,
     borderColor: "#ddd",
     height: 50,
-    // textAlign:"center",
+     textAlign:"center",
     paddingLeft: 100,
+  },
+  content:{
+    backgroundColor:"#ffff",
+    marginBottom:300
   },
   Header: {
     marginBottom: 100,

@@ -10,6 +10,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 function ProjectShow({ navigation }) {
   const [updatedDate, setUpdatedDate] = useState("");
   const [errorUpdatedDate, setErrorUpdatedDate] = useState("");
+  
   /////////////////// Diver Constant  /////////////////////////////
 
   const screenWidth = Dimensions.get("window").width;
@@ -53,10 +54,10 @@ function ProjectShow({ navigation }) {
   const [EncReel, setEncReel] = useState(0);
 
   /////////////////////////////////// Progress //////////////////////////////////////////////////
-    const [dataDisip, setDataDisip] = useState("");
+  const [dataDisip, setDataDisip] = useState("");
   //////////// Planned //////////////
 
-      console.table(dataDisip);
+  console.table(dataDisip);
 
   const [initialDatePl, setInitialDatePl] = useState("");
   const [finalDatePl, setFinalDatePl] = useState("");
@@ -385,23 +386,21 @@ function ProjectShow({ navigation }) {
     //////////////////////////////////// Facturation Previsionnel && Reel  ///////////////////////////////////////////////////////////
 
     async function fetchDataFactPrev() {
+      const res = await fetch(
+        "https://localhost:3000/factPrev/" + navigation.getParam("id")
+      );
+      const project = await res.json();
+      //console.table(project);
+      var totalmfp = project.map(function (projects) {
+        return projects["totalmfp"];
+      });
+      var totalmep = project.map(function (projects) {
+        return projects["totalmep"];
+      });
 
-        const res = await fetch(
-          "https://localhost:3000/factPrev/" + navigation.getParam("id")
-        );
-        const project = await res.json();
-        //console.table(project);
-        var totalmfp = project.map(function (projects) {
-          return projects["totalmfp"];
-        });
-        var totalmep = project.map(function (projects) {
-          return projects["totalmep"];
-        });
+      setFactPrev(totalmfp);
 
-        setFactPrev(totalmfp);
-
-        setEncPrev(totalmep);
-
+      setEncPrev(totalmep);
     }
 
     async function fetchDataFactReel() {
@@ -410,7 +409,7 @@ function ProjectShow({ navigation }) {
       );
       const project = await res.json();
 
-     // console.table(project);
+      // console.table(project);
 
       var totalmfr = project.map(function (projects) {
         return projects["totalmfr"];
@@ -431,17 +430,17 @@ function ProjectShow({ navigation }) {
         );
         const project = await res.json();
         setDataDisip(project);
-        console.table(project);                   
+        console.table(project);
       } catch (error) {
         console.log(error);
       }
     }
     async function callAPI() {
-        try {
-          await fetchDataDisip();
-        } catch (e) {
-          console.log(e);
-        }
+      try {
+        await fetchDataDisip();
+      } catch (e) {
+        console.log(e);
+      }
     }
     // async function fetchDataProgress() {
     //   const res = await fetch(
@@ -458,9 +457,8 @@ function ProjectShow({ navigation }) {
     //   });
     //   setDisipTitle(descdisci);
     //   //console.log(descdisci[0]);
-      
-    //   /////////////////// Planned ////////////////////////
 
+    //   /////////////////// Planned ////////////////////////
 
     //   var datedebutpla = project.map(function (projects) {
     //     return projects["datedebutpla"].slice(0, 10);
@@ -475,7 +473,6 @@ function ProjectShow({ navigation }) {
 
     //   setInitialDatePl(datedebutpla);
     //   setFinalDatePl(datedefinpla);
-
 
     //   ////////////////// Actual ////////////////////////
 
@@ -580,7 +577,7 @@ function ProjectShow({ navigation }) {
       );
 
       const project = await res.json();
-      
+
       /////////////////////  R F Q //////////////////
 
       var rfqforecast = project.map(function (projects) {
@@ -760,9 +757,13 @@ function ProjectShow({ navigation }) {
   }
 
   return (
+      <KeyboardAwareScrollView
+        style={{ marginVertical: 40 }}
+        showsVerticalScrollIndicator={false}
+      >
     <div>
       <View style={styles.Header}>
-        {firstPage ? (
+        {/* {firstPage ? (
           <AntDesign
             name="arrowleft"
             size={24}
@@ -770,8 +771,8 @@ function ProjectShow({ navigation }) {
             onPress={() => navigation.navigate("Project")}
             style={{ marginBottom: 5 }}
           />
-        ) : null}
-        {!firstPage && ChoiceSection ? (
+        ) : null} */}
+        {/* {!firstPage && ChoiceSection ? (
           <AntDesign
             name="arrowleft"
             size={24}
@@ -779,9 +780,9 @@ function ProjectShow({ navigation }) {
             onPress={HandleShowFirstPage}
             style={{ marginBottom: 5 }}
           />
-        ) : null}
+        ) : null} */}
         {/* Back to choiceSection  */}
-        {!ChoiceSection && !ShowMdr && !ShowPtr && !ShowConst ? (
+        {/* {!ChoiceSection && !ShowMdr && !ShowPtr && !ShowConst ? (
           <AntDesign
             name="arrowleft"
             size={24}
@@ -789,9 +790,9 @@ function ProjectShow({ navigation }) {
             onPress={HandleShowEngeenier}
             style={{ marginBottom: 5 }}
           />
-        ) : null}
+        ) : null} */}
         {/* Back to EngSection  */}
-        {!ChoiceSection && !ShowEngSection && ShowMdr && !ShowPtr ? (
+        {/* {!ChoiceSection && !ShowEngSection && ShowMdr && !ShowPtr ? (
           <AntDesign
             name="arrowleft"
             size={24}
@@ -799,9 +800,9 @@ function ProjectShow({ navigation }) {
             onPress={HandleBackEngSection}
             style={{ marginBottom: 5 }}
           />
-        ) : null}
+        ) : null} */}
         {/* Back to proSection  */}
-        {!ChoiceSection && !ShowProSection && ShowPtr && !ShowMdr ? (
+        {/* {!ChoiceSection && !ShowProSection && ShowPtr && !ShowMdr ? (
           <AntDesign
             name="arrowleft"
             size={24}
@@ -809,9 +810,9 @@ function ProjectShow({ navigation }) {
             onPress={HandleBackProSection}
             style={{ marginBottom: 5 }}
           />
-        ) : null}
+        ) : null} */}
         {/* Back to constSection  */}
-        {!ChoiceSection && !ShowConstSection && ShowConst && !ShowPtr ? (
+        {/* {!ChoiceSection && !ShowConstSection && ShowConst && !ShowPtr ? (
           <AntDesign
             name="arrowleft"
             size={24}
@@ -819,14 +820,22 @@ function ProjectShow({ navigation }) {
             onPress={HandleBackConstructSection}
             style={{ marginBottom: 5 }}
           />
-        ) : null}
+        ) : null} */}
 
-        <Text style={{ marginLeft: 60, fontWeight: "bold", fontSize: 15 }}>
+        <Text
+          style={{
+            marginLeft: 60,
+            fontWeight: "bold",
+            fontSize: 15,
+            marginTop: 10,
+          }}
+        >
           {navigation.getParam("projectname")}
         </Text>
       </View>
       {firstPage ? (
-        <View>
+      
+        <View style={styles.content}>
           <View>
             <TextInput
               style={styles.input}
@@ -1854,16 +1863,21 @@ function ProjectShow({ navigation }) {
         </View>
       ) : null}
     </div>
+    </KeyboardAwareScrollView>
   );
 }
 const styles = StyleSheet.create({
   Header: {
-    marginBottom: 50,
-    borderBottomWidth: 1,
-    borderColor: "#ddd",
-    marginTop: 10,
-    display: "flex",
-    flexDirection: "row",
+    // marginBottom: 50,
+    // borderBottomWidth: 1,
+    // borderColor: "#ddd",
+    // marginTop: 10,
+    // display: "flex",
+    // flexDirection: "row",
+  },
+  content: {
+    backgroundColor: "#ffff",
+    marginBottom: 300,
   },
   input: {
     margin: 15,
