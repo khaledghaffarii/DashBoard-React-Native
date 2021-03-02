@@ -262,6 +262,13 @@ export default function Disipline({ navigation }) {
   return (
     <View>
       <View style={styles.Header}>
+        <AntDesign
+          name="arrowleft"
+          size={24}
+          color="black"
+          onPress={() => navigation.navigate("Project")}
+          style={{ marginBottom: 5 }}
+        />
 
         <Text style={styles.TitleHeader}>
           {navigation.getParam("descdisci")}
@@ -348,17 +355,15 @@ export default function Disipline({ navigation }) {
         </Text>
       </View>
       <View>
-        {
-          navigation.getParam("descdisci") === "Engineering Progress" ||
-          navigation.getParam("descdisci") === "procurement Progress" ||
-          navigation.getParam("descdisci") === "Construction Progress" ? (
+        {navigation.getParam("descdisci") === "Engineering Progress" ||
+        navigation.getParam("descdisci") === "procurement Progress" ||
+        navigation.getParam("descdisci") === "Construction Progress" ? (
           <Button
             style={{ marginTop: 50 }}
             title="More details"
             //onPress={HandleShowDetailsProcurement}
           />
-        ) : null 
-        }
+        ) : null}
       </View>
     </View>
   );
