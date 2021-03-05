@@ -344,13 +344,13 @@ const ProjectDetail = (props) => {
         setDateIfrPl(filterDateplifa.filter((n) => n == 0 || n).length);
         setDateIfrAct(filterDateactifr.filter((n) => n == 0 || n).length);
 
-        // console.table(filterDateactifr);
-        // console.table(filterDateplifa);
+        console.table(filterDateactifr);
+        console.table(filterDateplifa);
       } else {
         setDateIfrPl(dateplifr.filter((n) => n == 0 || n).length);
         setDateIfrAct(dateactifr.filter((n) => n == 0 || n).length);
-        // console.log(dateplifr);
-        // console.log(dateactifr);
+        console.table(dateplifr);
+        console.table(dateactifr);
       }
 
       /////////  IFA  //////////////////////
@@ -575,14 +575,14 @@ const ProjectDetail = (props) => {
         setPlInspection(filterPlan.filter((n) => n == 0 || n).length);
         setFactInspection(filterFactbyeppm.filter((n) => n == 0 || n).length);
 
-        console.table(filterPlan);
-        console.table(filterFactbyeppm);
+        // console.table(filterPlan);
+        // console.table(filterFactbyeppm);
       } else {
         setPlInspection(plan.filter((n) => n == 0 || n).length);
         setFactInspection(factbyeppm.filter((n) => n == 0 || n).length);
 
-        console.table(plan);
-        console.table(factbyeppm);
+        // console.table(plan);
+        // console.table(factbyeppm);
       }
 
       // setPlInspection(plan.filter((n) => n == 0 || n).length);
@@ -606,16 +606,16 @@ const ProjectDetail = (props) => {
          setPlFob(filterFobplan.filter((n) => n == 0 || n).length);
          setFactFob(filterFobfact.filter((n) => n == 0 || n).length);
 
-         console.table(filterFobplan);
-         console.table(filterFobfact);
-         
+        //  console.table(filterFobplan);
+        //  console.table(filterFobfact);
+
        } else {
 
          setPlFob(fobplan.filter((n) => n == 0 || n).length);
          setFactFob(fobfact.filter((n) => n == 0 || n).length);
 
-         console.table(fobplan);
-         console.table(fobfact);
+        //  console.table(fobplan);
+        //  console.table(fobfact);
        }
 
       // setPlFob(fobplan.filter((n) => n == 0 || n).length);
