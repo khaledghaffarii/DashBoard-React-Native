@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions, View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
 import { PieChart } from "react-native-chart-kit";
 import { VictoryChart, VictoryBar } from "../Victory";
 import { Button } from "react-native-elements";
-export default function Disipline({ navigation }) {
-  const [ShowButton, setShowButton] = useState(false);
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+export default function Disipline(props) {
+
+  const navigation = props.navigation;
+  const { state } = props.navigation;
+
+  console.log(state.params.UpdatedDate);
+  console.log(state.params.data["descdisci"]);
+
+  //console.log("PROPS " + state.params.user);
+const UpdatedDate = state.params.UpdatedDate;
   const screenWidth = Dimensions.get("window").width;
   const chartConfig = {
     backgroundGradientFrom: "white",
@@ -169,7 +177,7 @@ export default function Disipline({ navigation }) {
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(
-        "https://localhost:3000/progress/project/" + navigation.getParam("id")
+        "https://localhost:3000/progress/project/" + state.params.data["id"]
       );
       const project = await res.json();
 
@@ -209,12 +217,11 @@ export default function Disipline({ navigation }) {
       setTotalFloat(totalfloat);
     }
 
-////////////////////////////////////  M  D  R  ////////////////////////////////////////////////////
-    
-    async function fetchDataMdr() {
+    ////////////////////////////////////  M  D  R  ////////////////////////////////////////////////////
 
+    async function fetchDataMdr() {
       const res = await fetch(
-        "https://localhost:3000/mdr/" + navigation.getParam("MPROJECT_id")
+        "https://localhost:3000/mdr/" + state.params.data["MPROJECT_id"]
       );
       const project = await res.json();
 
@@ -253,114 +260,142 @@ export default function Disipline({ navigation }) {
 
       setDateIfcPl(dateplb.filter((n) => n == 0 || n).length);
       setDateIfcAct(dateactb.filter((n) => n == 0 || n).length);
-
     }
     fetchDataMdr();
     fetchData();
   }, []);
 
   return (
-    <View>
-      <View style={styles.Header}>
-
-        <Text style={styles.TitleHeader}>
-          {navigation.getParam("descdisci")}
-        </Text>
-      </View>
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      style={{
+        marginVertical: 40,
+        backgroundColor: "#fff",
+        marginTop: 3,
+        marginBottom: 5,
+      }}
+    >
       <View>
-        <VictoryChart>
-          <VictoryBar data={dataProgress.a} />
-          <VictoryBar data={dataProgress.b} />
-          <VictoryBar
-            data={dataProgress.planned}
+        {UpdatedDate ? (
+          <View>
+            <Text style={styles.UpDate}>
+              {" "}
+              Updated Date : <Text> {UpdatedDate} </Text>
+            </Text>
+            <View
+              style={{
+                borderBottomWidth: 2,
+                borderColor: "#ddd",
+                marginTop: 5,
+                marginBottom: 30,
+              }}
+            ></View>
+          </View>
+        ) : null}
+        <View style={styles.Header}>
+          <Text style={styles.TitleHeader}>
+            {state.params.data["descdisci"]}
+          </Text>
+        </View>
+        <View>
+          <VictoryChart>
+            <VictoryBar data={dataProgress.a} />
+            <VictoryBar data={dataProgress.b} />
+            <VictoryBar
+              data={dataProgress.planned}
+              style={{
+                data: { fill: "#2E58BF", strokeWidth: 30 },
+                paddingLeft: 10,
+              }}
+            />
+            <VictoryBar
+              data={dataProgress.actual}
+              style={{
+                data: { fill: "#F00", strokeWidth: 30 },
+              }}
+            />
+            <VictoryBar data={dataProgress.c} />
+            <VictoryBar data={dataProgress.d} />
+          </VictoryChart>
+        </View>
+        <View>
+          <PieChart
+            data={ProgressData}
+            width={screenWidth}
+            height={210}
+            chartConfig={chartConfig}
+            accessor={"population"}
+            backgroundColor={"transparent"}
+            paddingLeft={"15"}
+            center={[5, 5]}
+            absolute
+          />
+        </View>
+        <View>
+          <Text
             style={{
-              data: { fill: "#2E58BF", strokeWidth: 30 },
-              paddingLeft: 10,
+              fontWeight: "bold",
+              marginBottom: 20,
+              fontSize: 15,
+              color: "#2DAAF1",
             }}
-          />
-          <VictoryBar
-            data={dataProgress.actual}
+          >
+            {" "}
+            Date Fin Planifiée :{" "}
+            <Text style={{ marginLeft: 10, textAlign: "right" }}>
+              {" "}
+              {finalDatePl}{" "}
+            </Text>
+          </Text>
+          <Text
             style={{
-              data: { fill: "#F00", strokeWidth: 30 },
+              fontWeight: "bold",
+              marginBottom: 20,
+              fontSize: 15,
+              color: "#2DAAF1",
             }}
-          />
-          <VictoryBar data={dataProgress.c} />
-          <VictoryBar data={dataProgress.d} />
-        </VictoryChart>
-      </View>
-      <View>
-        <PieChart
-          data={ProgressData}
-          width={screenWidth}
-          height={210}
-          chartConfig={chartConfig}
-          accessor={"population"}
-          backgroundColor={"transparent"}
-          paddingLeft={"15"}
-          center={[5, 5]}
-          absolute
-        />
-      </View>
-      <View>
-        <Text
-          style={{
-            fontWeight: "bold",
-            marginBottom: 20,
-            fontSize: 15,
-            color: "#2DAAF1",
-          }}
-        >
-          {" "}
-          Date Fin Planifiée :{" "}
-          <Text style={{ marginLeft: 10, textAlign: "right" }}>
+          >
             {" "}
-            {finalDatePl}{" "}
+            Date Fin Actuel :{" "}
+            <Text style={{ marginLeft: 10, textAlign: "right" }}>
+              {" "}
+              {finalDateAct}
+            </Text>
           </Text>
-        </Text>
-        <Text
-          style={{
-            fontWeight: "bold",
-            marginBottom: 20,
-            fontSize: 15,
-            color: "#2DAAF1",
-          }}
-        >
-          {" "}
-          Date Fin Actuel :{" "}
-          <Text style={{ marginLeft: 10, textAlign: "right" }}>
+          <Text
+            style={{
+              fontWeight: "bold",
+              marginBottom: 20,
+              fontSize: 15,
+              color: "#2DAAF1",
+            }}
+          >
             {" "}
-            {finalDateAct}
+            Total Float :{" "}
+            <Text style={{ marginLeft: 10, textAlign: "right" }}>
+              {TotalFloat} Jours
+            </Text>
           </Text>
-        </Text>
-        <Text
-          style={{
-            fontWeight: "bold",
-            marginBottom: 20,
-            fontSize: 15,
-            color: "#2DAAF1",
-          }}
-        >
-          {" "}
-          Total Float :{" "}
-          <Text style={{ marginLeft: 10, textAlign: "right" }}>
-            {TotalFloat} Jours
-          </Text>
-        </Text>
+        </View>
+        <View>
+          {state.params.data["descdisci"] === "Engineering Progress" ||
+          state.params.data["descdisci"] === "procurement Progress" ||
+          state.params.data["descdisci"] === "Construction Progress" ? (
+            <Button
+              style={{ marginTop: 15 }}
+              title="More details"
+              onPress={() =>
+                navigation.navigate("Project_Details", {
+                  UpdatedDate: UpdatedDate,
+                  Disipline: state.params.data["descdisci"],
+                  key: state.params.data["MPROJECT_id"],
+                })
+              }
+            />
+          ) : null}
+        </View>
       </View>
-      <View>
-        {
-          navigation.getParam("descdisci") === "Engineering Progress" ||
-          navigation.getParam("descdisci") === "procurement Progress" ||
-          navigation.getParam("descdisci") === "Construction Progress" ? (
-          <Button
-            style={{ marginTop: 50 }}
-            title="More details"
-            //onPress={HandleShowDetailsProcurement}
-          />
-        ) : null 
-        }
-      </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -372,10 +407,20 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
   },
+  UpDate: {
+    textAlign: "left",
+    marginLeft: 40,
+    marginTop: 20,
+    marginBottom: 40,
+    fontWeight: "bold",
+    fontSize: 15,
+  },
   TitleHeader: {
     marginLeft: 60,
     fontWeight: "bold",
     fontSize: 15,
+    marginTop: 15,
+    marginBottom: 15,
   },
 });
 //navigation.getParam("descdisci"), navigation.getParam("descdisci");
