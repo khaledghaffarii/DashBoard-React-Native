@@ -75,7 +75,7 @@ router.get("/pos_act", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const results = await db
     .promise()
-    .query(` SELECT  (rfqforecast) , (rfqissuetocompany) , (receivedofferdate) , (bescopereply) , (poplanned) , (poissuedate)  FROM  (ptr) WHERE MPROJECT_id = ` + req.params.id);
+    .query(` SELECT  *  FROM  (ptr) WHERE MPROJECT_id = ` + req.params.id);
   console.log(results);
   res.status(200).send(results[0]);
 });
