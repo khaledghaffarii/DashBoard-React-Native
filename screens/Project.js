@@ -8,14 +8,24 @@ import {
   FlatList,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Button } from "react-native-elements";
 import { Icon } from "react-native-elements";
 import projectShow from "./ProjectShow";
 // import {creatStackNavigator} from 'react-navigation-stack'
 // import {createAppContainer} from 'react-navigation';
 import Constants from "expo-constants"; 
-export default function Project({ navigation, props }) {
+
+
+export default function Project({ navigation, props }) 
+{
+  
+  const [UpdatedDate, setUpdatedDate] = useState("");
+  const [ShowDate, setShowDate] = useState(false);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [dataProject, setDataProject] = useState("");
+
+
   // const [updatedDate, setUpdatedDate] = useState("");
   // const { navigation, route } = props;
   console.log(dataProject);
@@ -61,6 +71,16 @@ export default function Project({ navigation, props }) {
 
   // console.log(dataProject);
   // //const { itemId } = route.params;
+   function HandleDateChange(e) {
+     setUpdatedDate(e.target.value);
+   }
+   function HandleShowDate() {
+     setShowDate(true);
+     if (!UpdatedDate) {
+       setShowDate(false);
+     }
+    //if (finalDatePl < UpdatedDate) console.log(finalDatePl);
+   }
   return (
     <View style={styles.content}>
       {/* <View style={styles.Header}>
@@ -83,6 +103,32 @@ export default function Project({ navigation, props }) {
         style={{ marginVertical: 40 }}
         showsVerticalScrollIndicator={false}
       >
+        <View>
+          <TextInput
+            placeholderTextColor="#2daaf3 "
+            numeric
+            keyboardType={"numeric"}
+            style={styles.input}
+            placeholder=" Enter Date :  YYYY-MM-DD"
+            underlineColorAndroid="transparent"
+            onChange={HandleDateChange}
+            maxLength={10}
+          />
+          <View>
+            <Button
+              title="Valider La Date"
+              type="clear"
+              style={{ textAlign: "left", marginTop: 15, marginRight: 185 }}
+              onPress={HandleShowDate}
+            />{" "}
+          </View>{" "}
+          {ShowDate && UpdatedDate ? (
+            <Text style={styles.UpDate}>
+              {" "}
+              Updated Date :<Text> {UpdatedDate} </Text>{" "}
+            </Text>
+          ) : null}
+        </View>
         <View style={styles.content}>
           {Object.values(dataProject)
             .filter((val) => {
@@ -96,8 +142,13 @@ export default function Project({ navigation, props }) {
             })
             .map((dataProjects) => (
               <TouchableOpacity
-                onPress={() => navigation.navigate("ProjectShow", dataProjects)}
-                >
+                onPress={() =>
+                  navigation.navigate("ProjectShow", {
+                    dataProjects: dataProjects,
+                    UpdatedDate: UpdatedDate,
+                  })
+                }
+              >
                 <Text style={styles.container}>
                   {" "}
                   {dataProjects.projectname}
@@ -113,16 +164,24 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     marginTop: 10,
-    backgroundColor: "white",
+    backgroundColor: "#F5FCFF",
     borderBottomWidth: 2,
     borderColor: "#ddd",
     height: 50,
-     textAlign:"center",
+    textAlign: "center",
     paddingLeft: 100,
   },
-  content:{
-    backgroundColor:"#ffff",
-    marginBottom:300
+  UpDate: {
+    textAlign: "left",
+    marginBottom:50,
+    marginLeft: 10,
+    marginTop: 10,
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  content: {
+    backgroundColor: "#ffff",
+    marginBottom: 300,
   },
   Header: {
     marginBottom: 100,
