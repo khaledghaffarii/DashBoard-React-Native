@@ -7,7 +7,9 @@ import Auth from './Auth';
 // Loading screen
 import ProjectShow from "../screens/ProjectShow";
 import Project from '../screens/Project'
-import Disipline from "../screens/Disipline";
+import Disciplined from "../screens/Disipline";
+import Project_Details from '../screens/ ProjectDetail';
+import Discipline_list from '../screens/Discipline_list'
 import { createStackNavigator } from 'react-navigation-stack';
 
 
@@ -20,8 +22,14 @@ const screens = {
   ProjectShow: {
     screen: ProjectShow,
   },
-  Disipline: {
-    screen: Disipline,
+  Disciplined: {
+    screen: Disciplined,
+  },
+  Project_Details: {
+    screen: Project_Details,
+  },
+  Discipline_list: {
+    screen: Discipline_list,
   },
 };
 const AppNavigator = createStackNavigator(screens);
