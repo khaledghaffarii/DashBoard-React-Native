@@ -6,3 +6,4 @@ export const VictoryLabel = require("victory-native").VictoryLabel;
 export const VictoryScatter = require("victory-native").VictoryScatter;
 export const VictoryAxis = require("victory-native").VictoryAxis;
 export const VictoryTheme = require("victory-native").VictoryTheme;
+export const VictoryLine = require("victory-native").VictoryLine;

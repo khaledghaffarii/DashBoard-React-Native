@@ -4,4 +4,5 @@ export const VictoryChart = require("victory").VictoryChart;
 export const VictoryBar = require("victory").VictoryBar;
 export const VictoryLabel = require("victory").VictoryLabel;
 export const VictoryScatter = require("victory").VictoryScatter;
+export const VictoryGroup = require("victory").VictoryGroup;
 export const VictoryTheme = require("victory").VictoryTheme;

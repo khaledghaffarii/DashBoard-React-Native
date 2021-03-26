@@ -11,11 +11,18 @@ import Disciplined from "../screens/Disipline";
 import Project_Details from '../screens/ ProjectDetail';
 import Discipline_list from '../screens/Discipline_list'
 import { createStackNavigator } from 'react-navigation-stack';
-
-
- 
+import Authenticate from "../screens/Authenticate";
+import Type_details from "../screens/Type_details";
+import Civil_Engineering from "../screens/Civil_Engineering";
+import Piping_Engeneering from "../screens/Piping_Engeneering";
+import Intrumentation from "../screens/Intrumentation";
+import Electrical_Engineering from "../screens/elecric";
+import Quantity_Tracking from "../screens/quantity_tracking";
 
 const screens = {
+  // Authenticate:{
+  //    screen: Authenticate,
+  // },
   All_Project: {
     screen: Project,
   },
@@ -30,6 +37,24 @@ const screens = {
   },
   Discipline_list: {
     screen: Discipline_list,
+  },
+  Type_Construction: {
+    screen: Type_details,
+  },
+  // Civil_Engineering: {
+  //   screen: Civil_Engineering,
+  // },
+  // Piping_Engeneering: {
+  //   screen: Piping_Engeneering,
+  // },
+  // Intrumentation: {
+  //   screen: Intrumentation,
+  // },
+  // Electrical_Engineering: {
+  //   screen: Electrical_Engineering,
+  // },
+  Quantity_Tracking: {
+    screen: Quantity_Tracking,
   },
 };
 const AppNavigator = createStackNavigator(screens);

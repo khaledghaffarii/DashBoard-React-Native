@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput, Text } from "react-native-paper";
-import { Button } from "react-native-elements";
+import { Button,Card } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {ProgressChart} from "react-native-chart-kit";
 
 function ProjectShow( props ) {
 
   const navigation = props.navigation;
   const { state } = props.navigation;
 
-  console.log(state.params.UpdatedDate);
+  //console.log(state.params.UpdatedDate);
   const UpdatedDate = state.params.UpdatedDate;
-  console.log(state.params.dataProjects["id"]);
+ // console.log(state.params.dataProjects["id"]);
   /////////////////// Facturation Previsionnel &&  Facturation  Reel ///////////////////////////////////////////////////////////
 
   const [FactPrev, setFactPrev] = useState(0);
@@ -85,14 +86,15 @@ function ProjectShow( props ) {
     }
 
     //////////////////////////////////// Progress ///////////////////////////////////////////////////////////
+    async function fetchDateProgress()
+    {
 
-    async function fetchDataProgress() {
       const res = await fetch(
-        "https://localhost:3000/progress/" + state.params.dataProjects["id"]
+        "https://localhost:3000/project/" + state.params.dataProjects["id"]
       );
       const project = await res.json();
 
-      /////////////////// Planned ////////////////////////
+      // /////////////////// Planned ////////////////////////
 
       var datedebutpla = project.map(function (projects) {
         return projects["datedebutpla"].slice(0, 10);
@@ -102,10 +104,6 @@ function ProjectShow( props ) {
         return projects["datedefinpla"].slice(0, 10);
       });
       console.log(datedefinpla);
-      // for(let i=1;i<datedefinpla.length;i++)
-      // {
-      //   if (datedefinpla[i] < UpdatedDate) console.log(datedefinpla[i]);
-      // }
 
       setInitialDatePl(datedebutpla);
       setFinalDatePl(datedefinpla);
@@ -122,6 +120,15 @@ function ProjectShow( props ) {
       setInitialDateAct(datedebutactu);
       setFinalDateAct(datedefinactu);
 
+    }
+    async function fetchDataProgress() {
+      const res = await fetch(
+        "https://localhost:3000/total_progress/" +
+          state.params.dataProjects["id"]
+      );
+      const project = await res.json();
+
+     
       ////////////////////////// Total_Float  ////////////////////////
 
       var totalfloat = project.map(function (projects) {
@@ -143,6 +150,7 @@ function ProjectShow( props ) {
     ///////////////////////////////////////  Markup  ////////////////////////////////////////////////////////
 
     async function fetchDataMarkup() {
+      
       const res = await fetch(
         "https://localhost:3000/markup/" + state.params.dataProjects["id"]
       );
@@ -157,8 +165,9 @@ function ProjectShow( props ) {
 
       setMarkupPl(markupinit);
       setMarkupAct(markupactu);
-    }
 
+    }
+fetchDateProgress();
     fetchDataFactReel();
     fetchDataFactPrev();
     fetchDataMarkup();
@@ -176,17 +185,7 @@ function ProjectShow( props ) {
         marginBottom: 3,
       }}
     >
-      <div>
-        <Button
-          title="Project Details"
-          style={{marginTop:10}}
-          onPress={() =>
-            navigation.navigate("Discipline_list", {
-              id: state.params.dataProjects["id"],
-              date: UpdatedDate,
-            })
-          }
-        />
+      <View>
         {UpdatedDate ? (
           <View>
             <Text style={styles.UpDate}>
@@ -208,38 +207,55 @@ function ProjectShow( props ) {
             {state.params.dataProjects["projectname"]}
           </Text>
         </View>
-
+        <Button
+          title="Project Details"
+          style={{ marginTop: 10 }}
+          onPress={() =>
+            navigation.navigate("Discipline_list", {
+              id: state.params.dataProjects["id"],
+              date: UpdatedDate,
+            })
+          }
+        />
         <View style={styles.content}>
           <View style={styles.doc}>
             <Text style={styles.SubTitle}>
               {" "}
               Date de Début planifiée:{" "}
-              {/* <Text style={{ marginLeft: 10, textAlign: "right" }}>
+              <Text style={{ marginLeft: 10, textAlign: "right" }}>
                 {initialDatePl}
-              </Text> */}
+              </Text>
             </Text>
             <Text style={styles.SubTitle}>
               {" "}
               Date Fin Planifiée :{" "}
-              {/* <Text style={{ marginLeft: 10, textAlign: "right" }}>
+              <Text style={{ marginLeft: 10, textAlign: "right" }}>
                 {" "}
                 {finalDatePl}{" "}
-              </Text> */}
+              </Text>
             </Text>
             <Text style={styles.SubTitle}>
               {" "}
               Date Début Actuel :
-              {/* <Text style={{ marginLeft: 10, textAlign: "right" }}>
+              <Text style={{ marginLeft: 10, textAlign: "right" }}>
                 {initialDateAct}
-              </Text> */}
+              </Text>
             </Text>
             <Text style={styles.SubTitle}>
               {" "}
               Date Fin Actuel :{" "}
-              {/* <Text style={{ marginLeft: 10, textAlign: "right" }}>
+              <Text style={{ marginLeft: 10, textAlign: "right" }}>
                 {" "}
                 {finalDateAct}
-              </Text> */}
+              </Text>
+            </Text>
+
+            <Text style={styles.SubTitle}>
+              {" "}
+              Total Float :{" "}
+              <Text style={{ marginLeft: 10, textAlign: "right" }}>
+                {TotalFloat} days
+              </Text>
             </Text>
             <View
               style={{
@@ -252,16 +268,16 @@ function ProjectShow( props ) {
             <Text style={styles.SubTitle}>
               {" "}
               Avancement Global Planifié :{" "}
-              {/* <Text style={{ marginLeft: 10, textAlign: "right" }}>
-                {TotalAvPl}
-              </Text> */}
+              <Text style={{ marginLeft: 10, textAlign: "right" }}>
+                {TotalAvPl} %
+              </Text>
             </Text>
             <Text style={styles.SubTitle}>
               {" "}
               Avancement Global Réel :{" "}
-              {/* <Text style={{ marginLeft: 10, textAlign: "right" }}>
-                {TotalAvAct}
-              </Text> */}
+              <Text style={{ marginLeft: 10, textAlign: "right" }}>
+                {TotalAvAct} %
+              </Text>
             </Text>
             <View
               style={{
@@ -271,13 +287,6 @@ function ProjectShow( props ) {
                 marginBottom: 30,
               }}
             ></View>
-            <Text style={styles.SubTitle}>
-              {" "}
-              Total Float :{" "}
-              {/* <Text style={{ marginLeft: 10, textAlign: "right" }}>
-                {TotalFloat}
-              </Text> */}
-            </Text>
             <Text style={styles.SubTitle}>
               {" "}
               Mark_up Initial :{" "}
@@ -385,7 +394,7 @@ function ProjectShow( props ) {
             ></View>
           </View>
         </View>
-      </div>
+      </View>
     </KeyboardAwareScrollView>
   );
 }

@@ -21,9 +21,7 @@ router.get("/:id", async (req, res) => {
 router.get("/project/:id", async (req, res) => {
   const results = await db
     .promise()
-    .query(
-      `SELECT * FROM (avance) WHERE  (id) = ` + req.params.id
-    );
+    .query(`SELECT * FROM (avance) WHERE  (disipline) = ` + req.params.id);
   console.log(results);
   res.status(200).send(results[0]);
 });

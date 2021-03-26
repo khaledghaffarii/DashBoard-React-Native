@@ -54,8 +54,8 @@ const Master_Document = () => {
           >
             I . F . R
           </Text>
-          <Text>
-            <h4 style={{ textAlign: "center" }}> Number_Document_Register </h4>
+          <Text style={{ textAlign: "center" }}>
+           Number_Document_Register
           </Text>
           <VictoryChart>
             <VictoryBar data={dataIFR.a} />
@@ -136,8 +136,8 @@ const Master_Document = () => {
           >
             I . F . A
           </Text>
-          <Text>
-            <h4 style={{ textAlign: "center" }}> Number_Document_Register </h4>
+          <Text style={{ textAlign: "center" }}>
+             Number_Document_Register
           </Text>
           <VictoryChart>
             <VictoryBar data={dataIFA.a} />
@@ -219,8 +219,8 @@ const Master_Document = () => {
           >
             I . F . C
           </Text>
-          <Text>
-            <h4 style={{ textAlign: "center" }}> Number_Document_Register </h4>
+          <Text style={{ textAlign: "center" }}>
+           Number_Document_Register
           </Text>
           <VictoryChart>
             <VictoryBar data={dataIFC.a} />

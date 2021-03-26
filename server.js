@@ -6,7 +6,7 @@ app.use(cors());
 
 const session = require("express-session");
 const store = new session.MemoryStore();
-const mdrRoute = require('./routers/mdr');
+const mdrRoute = require("./routers/mdr");
 const otRoute = require("./routers/ot");
 const tqrRoute = require("./routers/tqr");
 const strRoute = require("./routers/str");
@@ -18,14 +18,20 @@ const emploRoute = require("./routers/emplo");
 const consoRoute = require("./routers/conso");
 const constructionRoute = require("./routers/construction");
 const projectRoute = require("./routers/project");
-const progressRoute = require("./routers/progress")
+const progressRoute = require("./routers/progress");
 const markupRoute = require("./routers/markup");
 const factPrevRoute = require("./routers/factPrev");
 const factReelRoute = require("./routers/factReel");
+const total_progressRoute = require("./routers/total_progress");
+const civil = require("./routers/civil");
+const piping = require("./routers/piping");
+const instrumentation = require("./routers/instru");
+const disciplined = require("./routers/disciplined");
+const activity = require("./routers/activity");
+const activity_type = require("./routers/activity_type");
 const https = require("https");
 const path = require("path");
 const fs = require("fs");
-
 
 app.use(express.urlencoded({ extented: false }));
 
@@ -39,13 +45,14 @@ app.use(
     saveUninitialized: true,
     store,
   })
-);  
+);
 
 app.use((req, res, next) => {
   console.log(store);
   console.log(`${req.method} - ${req.url}`);
   next();
 });
+
 app.use("/project", projectRoute);
 app.use("/mdr", mdrRoute);
 app.use("/ot", otRoute);
@@ -59,13 +66,21 @@ app.use("/emplo", emploRoute);
 app.use("/emplos", emplosRoute);
 app.use("/conso", consoRoute);
 app.use("/construction", constructionRoute);
-app.use("/progress",progressRoute);
-app.use("/markup",markupRoute);
+app.use("/progress", progressRoute);
+app.use("/markup", markupRoute);
 app.use("/factPrev", factPrevRoute);
 app.use("/factReel", factReelRoute);
-app.get("/", (req, res,next) => {res.status(200).send("HELLO  PROGRAMMERS!!!")});
+app.use("/total_progress", total_progressRoute);
+app.use("/civil", civil);
+app.use("/piping", piping);
+app.use("/inst", instrumentation);
+app.use("/disciplined", disciplined);
+app.use("/activity", activity);
+app.use("/activity_type", activity_type);
 
-
+app.get("/", (req, res, next) => {
+  res.status(200).send("HELLO  PROGRAMMERS!!!");
+});
 
 const sslServer = https.createServer(
   {
@@ -75,79 +90,9 @@ const sslServer = https.createServer(
   app
 );
 
-
-
 sslServer.listen(3000, () => {
   console.log("Secure server 🚀🔑 on port 3000");
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // // var express = require("express");
 // // var app = express();
@@ -212,14 +157,6 @@ sslServer.listen(3000, () => {
 //   database: "dashBoard",
 //   insecureAuth: true,
 // });
-
-
-
-
-
-
-
-
 
 // con.connect(function (error) {
 //   console.log("connected");

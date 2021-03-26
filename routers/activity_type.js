@@ -12,13 +12,12 @@ router.get("/:id/:type", async (req, res) => {
   const results = await db
     .promise()
     .query(
-      ` SELECT (id),(plannedqty),(actualqty),(dateuse),(type),(MPROJECT_id) FROM conso WHERE (MPROJECT_id) = ` +
+      `SELECT * FROM construction_dhashboard_activity_type WHERE (MPROJECT_id) = ` +
         req.params.id +
-        ` AND (type) = ` +
+        ` AND (activity) = ` +
         req.params.type
     );
   console.log(results);
   res.status(200).send(results[0]);
 });
-
 module.exports = router;

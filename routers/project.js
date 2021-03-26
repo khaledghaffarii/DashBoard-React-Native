@@ -14,6 +14,15 @@ router.get("/", async (req, res) => {
   console.log(results);
   res.status(200).send(results[0]);
 });
+
+router.get("/:id", async (req, res) => {
+  const results = await db
+    .promise()
+    .query(`SELECT * FROM mproject WHERE  (id) = ` + req.params.id);
+  console.log(results);
+  res.status(200).send(results[0]);
+});
+
 // `SELECT mproject.id,(projectname),(dateplifr),(dateactifr),(dateplifa),(dateactifa),(dateplb),(dateactb FROM mproject INNER JOIN mdr on MPROJECT_id  = mproject.id
 // `;
 

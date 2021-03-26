@@ -56,7 +56,7 @@ class Login extends Component {
               <Button
                 full
                 style={{ marginBottom: 12 }}
-                onPress={() => navigation.navigate("Overview")}
+                onPress={() => navigation.navigate("Project ")}
               >
                 <Text button>Sign in</Text>
               </Button>

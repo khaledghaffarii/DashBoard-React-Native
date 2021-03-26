@@ -17,11 +17,11 @@ function ListDisip(props) {
 
   //console.log(dataDisip);
   useEffect(() => {
-    //////////////////////////////////// Progress ///////////////////////////////////////////////////////////
+    //////////////////////////////////// Disip ///////////////////////////////////////////////////////////
     async function fetchDataDisip() {
       try {
         const res = await fetch(
-          "https://127.0.0.1:3000/progress/" + state.params.id
+          "https://127.0.0.1:3000/disciplined/" + state.params.id
         );
         const project = await res.json();
 
@@ -103,7 +103,7 @@ function ListDisip(props) {
                 }}
               >
                 {" "}
-                {dataDisips.descdisci}{" "}
+                {dataDisips.name}{" "}
               </Text>{" "}
             </View>
           </TouchableOpacity>

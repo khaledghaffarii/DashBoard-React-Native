@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Block, Input } from "../components";
 import { Dimensions, View, StyleSheet, TouchableOpacity } from "react-native";
-import { BottomNavigation, TextInput, Text } from "react-native-paper";
+import { BottomNavigation, TextInput } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
-import { Button } from "react-native-elements";
+import { Button, Card, Text } from "react-native-elements";
 import { PieChart } from "react-native-chart-kit";
 import { VictoryChart, VictoryBar } from "../Victory";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { DataTable } from "react-native-paper";
+import { VictoryLegend } from "victory-legend";
+import { VictoryGroup } from "victory-group";
+// import { LineChart } from "react-native-line-chart";
+
+import { LineChart, Path, Grid, XAxis, YAxis } from "react-native-svg-charts";
 const ProjectDetail = (props) => {
+  const navigation = props.navigation;
   const { state } = props.navigation;
+
   //console.log("Title " + state.params.user, "ProjectKey: " + state.params.key);
+
   /////////////////// Diver Constant  /////////////////////////////
-  console.log(state.params.UpdatedDate);
+  //console.log(state.params.UpdatedDate);
+
   const UpdatedDate = state.params.UpdatedDate;
   const screenWidth = Dimensions.get("window").width;
   const chartConfig = {
@@ -26,24 +36,27 @@ const ProjectDetail = (props) => {
     barPercentage: 1.2,
     useShadowColorFromDataset: false,
   };
+  ////////////////////////// construction  //////////////////////////////////////////////////////////////
+  const [dataType, setDataType] = useState("");
 
+  //console.log(dataType);
   //////////////////////////////////// M  D  R  ///////////////////////////////////////////////////////////
 
   //////////// IFR //////////////
+  ////length
   const [dateIfrAct, setDateIfrAct] = useState("");
   const [dateIfrPl, setDateIfrPl] = useState("");
+  /////date
+  const [IfrAct, setIfrAct] = useState("");
+  const [IfrPl, setIfrPl] = useState("");
+  //console.log(dateIfrPl);
 
-  //console.table(dateIfrPl, dateIfrAct);
-
+  const axesSvg = { fontSize: 10, fill: "grey" };
+  const verticalContentInset = { top: 10, bottom: 10 };
+  const xAxisHeight = 30;
   const dataIFR = {
-    a: [{ x: 1, y: 0 }],
-    b: [{ x: 2, y: 0 }],
-    c: [{ x: 3, y: 0 }],
-    d: [{ x: 4, y: 0 }],
-    e: [{ x: 5, y: 0 }],
-    f: [{ x: 6, y: 0 }],
-    planned: [{ x: 2.5, y: dateIfrPl }],
-    actual: [{ x: 3.5, y: dateIfrAct }],
+    planned: [{ x: " ", y: dateIfrPl }],
+    actual: [{ x: " ", y: dateIfrAct }],
   };
   const IFRdata = [
     {
@@ -68,14 +81,8 @@ const ProjectDetail = (props) => {
 
   // console.table(dateIfaPl, dateIfaAct);
   const dataIFA = {
-    a: [{ x: 1, y: 0 }],
-    b: [{ x: 2, y: 0 }],
-    c: [{ x: 3, y: 0 }],
-    d: [{ x: 4, y: 0 }],
-    e: [{ x: 5, y: 0 }],
-    f: [{ x: 6, y: 0 }],
-    planned: [{ x: 2.5, y: dateIfaPl }],
-    actual: [{ x: 3.5, y: dateIfaAct }],
+    planned: [{ x: " ", y: dateIfaPl }],
+    actual: [{ x: " ", y: dateIfaAct }],
   };
   const IFAdata = [
     {
@@ -100,14 +107,8 @@ const ProjectDetail = (props) => {
   const [dateIfcPl, setDateIfcPl] = useState("");
 
   const dataIFC = {
-    a: [{ x: 1, y: 0 }],
-    b: [{ x: 2, y: 0 }],
-    c: [{ x: 3, y: 0 }],
-    d: [{ x: 4, y: 0 }],
-    e: [{ x: 5, y: 0 }],
-    f: [{ x: 6, y: 0 }],
-    planned: [{ x: 2.5, y: dateIfcPl }],
-    actual: [{ x: 3.5, y: dateIfcAct }],
+    planned: [{ x: " ", y: dateIfcPl }],
+    actual: [{ x: " ", y: dateIfcAct }],
   };
   const IFCdata = [
     {
@@ -131,14 +132,8 @@ const ProjectDetail = (props) => {
   const [dateRfqPl, setDateRfqPl] = useState("");
 
   const dataRFQ = {
-    a: [{ x: 1, y: 0 }],
-    b: [{ x: 2, y: 0 }],
-    c: [{ x: 3, y: 0 }],
-    d: [{ x: 4, y: 0 }],
-    e: [{ x: 5, y: 0 }],
-    f: [{ x: 6, y: 0 }],
-    planned: [{ x: 2.5, y: dateRfqPl }],
-    actual: [{ x: 3.5, y: dateRfqAct }],
+    planned: [{ x: " ", y: dateRfqPl }],
+    actual: [{ x: " ", y: dateRfqAct }],
   };
   const RFQdata = [
     {
@@ -162,14 +157,8 @@ const ProjectDetail = (props) => {
   const [dateTecAct, setDateTecAct] = useState("");
 
   const dataTEC = {
-    a: [{ x: 1, y: 0 }],
-    b: [{ x: 2, y: 0 }],
-    c: [{ x: 3, y: 0 }],
-    d: [{ x: 4, y: 0 }],
-    e: [{ x: 5, y: 0 }],
-    f: [{ x: 6, y: 0 }],
-    planned: [{ x: 2.5, y: dateTecPl }],
-    actual: [{ x: 3.5, y: dateTecAct }],
+    planned: [{ x: " ", y: dateTecPl }],
+    actual: [{ x: " ", y: dateTecAct }],
   };
   const TECdata = [
     {
@@ -193,14 +182,8 @@ const ProjectDetail = (props) => {
   const [datePosPl, setDatePosPl] = useState("");
 
   const dataPOS = {
-    a: [{ x: 1, y: 0 }],
-    b: [{ x: 2, y: 0 }],
-    c: [{ x: 3, y: 0 }],
-    d: [{ x: 4, y: 0 }],
-    e: [{ x: 5, y: 0 }],
-    f: [{ x: 6, y: 0 }],
-    planned: [{ x: 2.5, y: datePosPl }],
-    actual: [{ x: 3.5, y: datePosAct }],
+    planned: [{ x: " ", y: datePosPl }],
+    actual: [{ x: " ", y: datePosAct }],
   };
   const POSdata = [
     {
@@ -224,14 +207,8 @@ const ProjectDetail = (props) => {
 
   //console.log(ActAta);
   const data_STR = {
-    a: [{ x: 1, y: 0 }],
-    b: [{ x: 2, y: 0 }],
-    c: [{ x: 3, y: 0 }],
-    d: [{ x: 4, y: 0 }],
-    e: [{ x: 5, y: 0 }],
-    f: [{ x: 6, y: 0 }],
-    planned: [{ x: 2.5, y: plEta }],
-    actual: [{ x: 3.5, y: ActAta }],
+    planned: [{ x: " ", y: plEta }],
+    actual: [{ x: " ", y: ActAta }],
   };
   const STR_data = [
     {
@@ -257,14 +234,8 @@ const ProjectDetail = (props) => {
   const [factInspection, setFactInspection] = useState("");
 
   const data_INSPECTION = {
-    a: [{ x: 1, y: 0 }],
-    b: [{ x: 2, y: 0 }],
-    c: [{ x: 3, y: 0 }],
-    d: [{ x: 4, y: 0 }],
-    e: [{ x: 5, y: 0 }],
-    f: [{ x: 6, y: 0 }],
-    planned: [{ x: 2.5, y: plInspection }],
-    actual: [{ x: 3.5, y: factInspection }],
+    planned: [{ x: " ", y: plInspection }],
+    actual: [{ x: " ", y: factInspection }],
   };
   const INSPECTION_data = [
     {
@@ -290,14 +261,8 @@ const ProjectDetail = (props) => {
   const [factFob, setFactFob] = useState("");
 
   const data_FOB = {
-    a: [{ x: 1, y: 0 }],
-    b: [{ x: 2, y: 0 }],
-    c: [{ x: 3, y: 0 }],
-    d: [{ x: 4, y: 0 }],
-    e: [{ x: 5, y: 0 }],
-    f: [{ x: 6, y: 0 }],
-    planned: [{ x: 2.5, y: plFob }],
-    actual: [{ x: 3.5, y: factFob }],
+    planned: [{ x: " ", y: plFob }],
+    actual: [{ x: " ", y: factFob }],
   };
   const FOB_data = [
     {
@@ -316,12 +281,103 @@ const ProjectDetail = (props) => {
     },
   ];
   useEffect(() => {
-    ////////////////////////////////////  M  D  R  ///////////////////////////////////////////////////////////
+    ///////////////////////////////////////  M  D  R  ///////////////////////////////////////////////////////////
+    async function fetchDateMdr() {
+      const res = await fetch("https://localhost:3000/mdr/" + state.params.key);
+      const project = await res.json();
+      //console.log(project);
 
+      /////////  IFR //////////////////////
+
+      var dateplifr = project.map(function (projects) {
+        return projects["dateplifr"];
+      });
+
+      var dateactifr = project.map(function (projects) {
+        return projects["dateactifr"];
+      });
+
+      if (UpdatedDate) {
+        const filteractifr = dateactifr.filter(
+          (dateactifrs) => dateactifrs <= UpdatedDate
+        );
+        const filterplifa = dateplifr.filter(
+          (dateplifrs) => dateplifrs <= UpdatedDate
+        );
+
+        setIfrPl(filterplifa.filter((n) => n == 0 || n));
+        setIfrAct(filteractifr.filter((n) => n == 0 || n));
+
+        console.table(filteractifr);
+        console.table(filterplifa);
+      } else {
+        setIfrPl(dateplifr.filter((n) => n == 0 || n));
+        setIfrAct(dateactifr.filter((n) => n == 0 || n));
+        // console.table(dateplifr.filter((n) => n == 0 || n));
+        // console.table(dateactifr.filter((n) => n == 0 || n));
+      }
+
+      /////////  IFA  //////////////////////
+
+      //       var dateplifa = project.map(function (projects) {
+      //         return projects["dateplifa"];
+      //       });
+      //       var dateactifa = project.map(function (projects) {
+      //         return projects["dateactifa"];
+      //       });
+
+      //       if (UpdatedDate) {
+      //         const filterDateactifa = dateactifa.filter(
+      //           (dateactifas) => dateactifas <= UpdatedDate
+      //         );
+      //         const filterDateplifa = dateplifa.filter(
+      //           (dateplifas) => dateplifas <= UpdatedDate
+      //         );
+      //         setDateIfaAct(filterDateactifa.filter((n) => n == 0 || n).length);
+      //         setDateIfaPl(filterDateplifa.filter((n) => n == 0 || n).length);
+
+      //         // console.table(filterDateactifa);
+      //         // console.table(filterDateplifa);
+      //       } else {
+      //         setDateIfaAct(dateactifa.filter((n) => n == 0 || n).length);
+      //         setDateIfaPl(dateplifa.filter((n) => n == 0 || n).length);
+      //         // console.table(dateactifa);
+      //         // console.table(dateplifa);
+      //       }
+
+      //       ////////////  IFC  /////////////
+
+      //       var dateplb = project.map(function (projects) {
+      //         return projects["dateplb"];
+      //       });
+      //       var dateactb = project.map(function (projects) {
+      //         return projects["dateactb"];
+      //       });
+
+      //       if (UpdatedDate) {
+      //         const filterDateplb = dateplb.filter(
+      //           (dateplbs) => dateplbs <= UpdatedDate
+      //         );
+      //         const filterDateactb = dateactb.filter(
+      //           (dateactbs) => dateactbs <= UpdatedDate
+      //         );
+      //         setDateIfcPl(filterDateplb.filter((n) => n == 0 || n).length);
+      //         setDateIfcAct(filterDateactb.filter((n) => n == 0 || n).length);
+
+      //         // console.table(filterDateplb);
+      //         // console.table(filterDateactb);
+      //       } else {
+      //         setDateIfcPl(dateplb.filter((n) => n == 0 || n).length);
+      //         setDateIfcAct(dateactb.filter((n) => n == 0 || n).length);
+
+      //         // console.table(dateplb);
+      //         // console.table(dateactb);
+      //       }
+    }
     async function fetchDataMdr() {
       const res = await fetch("https://localhost:3000/mdr/" + state.params.key);
       const project = await res.json();
-      console.log(project);
+      //console.log(project);
 
       /////////  IFR //////////////////////
 
@@ -335,7 +391,7 @@ const ProjectDetail = (props) => {
 
       if (UpdatedDate) {
         const filterDateactifr = dateactifr.filter(
-          (dateactifas) => dateactifas <= UpdatedDate
+          (dateactifrs) => dateactifrs <= UpdatedDate
         );
         const filterDateplifa = dateplifr.filter(
           (dateplifrs) => dateplifrs <= UpdatedDate
@@ -344,13 +400,13 @@ const ProjectDetail = (props) => {
         setDateIfrPl(filterDateplifa.filter((n) => n == 0 || n).length);
         setDateIfrAct(filterDateactifr.filter((n) => n == 0 || n).length);
 
-        console.table(filterDateactifr);
-        console.table(filterDateplifa);
+        // console.table(filterDateactifr);
+        // console.table(filterDateplifa);
       } else {
         setDateIfrPl(dateplifr.filter((n) => n == 0 || n).length);
         setDateIfrAct(dateactifr.filter((n) => n == 0 || n).length);
-        console.table(dateplifr);
-        console.table(dateactifr);
+        // console.table(dateplifr);
+        // console.table(dateactifr);
       }
 
       /////////  IFA  //////////////////////
@@ -516,7 +572,9 @@ const ProjectDetail = (props) => {
       // setDatePosPl(poplanned.filter((n) => n == 0 || n).length);
       // setDatePosAct(poissuedate.filter((n) => n == 0 || n).length);
     }
+
     //////////////////////////////////// S  T  R  ///////////////////////////////////////////////////////////
+
     async function fetchDataStr() {
       const res = await fetch("https://localhost:3000/str/" + state.params.key);
       const project = await res.json();
@@ -554,6 +612,7 @@ const ProjectDetail = (props) => {
     async function fetchDataEtr() {
       const res = await fetch("https://localhost:3000/etr/" + state.params.key);
       const project = await res.json();
+
       // console.table(project);
 
       ///////////////////////INSPECTION //////////////////////////////////
@@ -597,37 +656,48 @@ const ProjectDetail = (props) => {
         return projects["fobfact"];
       });
 
-       if (UpdatedDate) {
-         const filterFobplan = fobplan.filter((fobplans) => fobplans <= UpdatedDate);
-         const filterFobfact = fobfact.filter(
-           (fobfacts) => fobfacts <= UpdatedDate
-         );
+      if (UpdatedDate) {
+        const filterFobplan = fobplan.filter(
+          (fobplans) => fobplans <= UpdatedDate
+        );
+        const filterFobfact = fobfact.filter(
+          (fobfacts) => fobfacts <= UpdatedDate
+        );
 
-         setPlFob(filterFobplan.filter((n) => n == 0 || n).length);
-         setFactFob(filterFobfact.filter((n) => n == 0 || n).length);
+        setPlFob(filterFobplan.filter((n) => n == 0 || n).length);
+        setFactFob(filterFobfact.filter((n) => n == 0 || n).length);
 
         //  console.table(filterFobplan);
         //  console.table(filterFobfact);
-
-       } else {
-
-         setPlFob(fobplan.filter((n) => n == 0 || n).length);
-         setFactFob(fobfact.filter((n) => n == 0 || n).length);
+      } else {
+        setPlFob(fobplan.filter((n) => n == 0 || n).length);
+        setFactFob(fobfact.filter((n) => n == 0 || n).length);
 
         //  console.table(fobplan);
         //  console.table(fobfact);
-       }
+      }
 
       // setPlFob(fobplan.filter((n) => n == 0 || n).length);
       // setFactFob(fobfact.filter((n) => n == 0 || n).length);
     }
 
+    ////////////////////////// construction  //////////////////////////////////////////////////////////
+    async function fetchDataConstruction() {
+      const res = await fetch(
+        "https://localhost:3000/activity/" + state.params.key
+      );
+      const project = await res.json();
+      //console.table(state.params.key);
+      setDataType(project);
+    }
+    fetchDateMdr();
+    fetchDataConstruction();
     fetchDataEtr();
     fetchDataStr();
     fetchDataPtr();
     fetchDataMdr();
   }, []);
-
+// console.log(IfrAct.values());
   return (
     <KeyboardAwareScrollView
       style={{
@@ -638,7 +708,7 @@ const ProjectDetail = (props) => {
       }}
       showsVerticalScrollIndicator={false}
     >
-      <View style={{ backgroundColor: "#fff" }}>
+      <View style={{ backgroundColor: "#fff", marginBottom: 10 }}>
         {state.params.Disipline === "Engineering Progress" ? (
           <View>
             <View>
@@ -658,172 +728,277 @@ const ProjectDetail = (props) => {
                   ></View>
                 </View>
               ) : null}
-              <Text style={{ textAlign: "center", marginTop: 10 }}>
-                Master_Document_Register
-              </Text>
-              <View
+              <Card>
+                <Text h3 style={{ textAlign: "center", marginTop: 10 }}>
+                  M . D . R
+                </Text>
+              </Card>
+
+              <Text
                 style={{
-                  borderBottomWidth: 2,
-                  borderColor: "#ddd",
-                  marginTop: 10,
-                  marginBottom: 30,
+                  paddingBottom: 8,
+                  backgroundColor: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
                 }}
-              ></View>
-              <View style={{ width: 300, height: 300 }}>
-                <View>
+              ></Text>
+              {dateIfrPl && dateIfrAct ? (
+                <Card>
+                  <Card.Title> I . F . R </Card.Title>
+                  <Card.Divider />
+                  <View>
+                    <View style={{ width: 300, height: 250 }}>
+                      <View>
+                        <VictoryChart>
+                          <VictoryGroup offset={60}>
+                            <VictoryBar
+                              data={dataIFR.planned}
+                              style={{
+                                data: { fill: "#008DDE", strokeWidth: 7 },
+                                paddingLeft: 10,
+                              }}
+                            />
+                            <VictoryBar
+                              data={dataIFR.actual}
+                              style={{
+                                data: { fill: "#F00", strokeWidth: 7 },
+                              }}
+                            />
+                          </VictoryGroup>
+                          <VictoryLegend
+                            x={Dimensions.get("screen").width / 2 - 50}
+                            orientation="horizontal"
+                            gutter={20}
+                            //title="Legend"
+                            centerTitle
+                            style={{
+                              marginBottom: 20,
+                              paddingLeft: 20,
+                            }}
+                            data={[
+                              {
+                                name: `${dateIfrPl} Planned`,
+                                symbol: { fill: "#008DDE" },
+                              },
+                              {
+                                name: `${dateIfrAct} Actual`,
+                                symbol: { fill: "#F00" },
+                              },
+                            ]}
+                          />
+                        </VictoryChart>
+                      </View>
+                    </View>
+
+                    {/* <PieChart
+                      data={IFRdata}
+                      width={screenWidth}
+                      height={210}
+                      chartConfig={chartConfig}
+                      accessor={"population"}
+                      backgroundColor={"transparent"}
+                      paddingLeft={"15"}
+                      center={[5, 5]}
+                      absolute
+                    /> */}
+                  </View>
+                </Card>
+              ) : (
+                <Card>
+                  <Card.Title> I . F . R </Card.Title>
+                  <Card.Divider />
                   <Text
                     style={{
                       paddingBottom: 8,
                       backgroundColor: "white",
                       fontWeight: "bold",
                       textAlign: "center",
+                      color: "#f00",
                     }}
                   >
-                    I . F . R
+                    Sorry no date added before {UpdatedDate}
                   </Text>
-
-                  <VictoryChart>
-                    <VictoryBar data={dataIFR.a} />
-                    <VictoryBar data={dataIFR.b} />
-                    <VictoryBar
-                      data={dataIFR.planned}
-                      style={{
-                        data: { fill: "#2E58BF", strokeWidth: 30 },
-                        paddingLeft: 10,
-                      }}
-                    />
-                    <VictoryBar
-                      data={dataIFR.actual}
-                      style={{
-                        data: { fill: "#F00", strokeWidth: 30 },
-                      }}
-                    />
-                    <VictoryBar data={dataIFR.c} />
-                    <VictoryBar data={dataIFR.d} />
-                  </VictoryChart>
-                </View>
-              </View>
-              <PieChart
-                data={IFRdata}
-                width={screenWidth}
-                height={210}
-                chartConfig={chartConfig}
-                accessor={"population"}
-                backgroundColor={"transparent"}
-                paddingLeft={"15"}
-                center={[5, 5]}
-                absolute
-              />
-              <View
+                </Card>
+              )}
+              {/* <View
                 style={{
                   borderBottomWidth: 2,
                   borderColor: "#ddd",
                   marginTop: 10,
                   marginBottom: 30,
                 }}
-              ></View>
-              <View>
-                <View style={{ width: 300, height: 300 }}>
+              ></View> */}
+              {/* <Text
+                style={{
+                  paddingBottom: 8,
+                  backgroundColor: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              ></Text> */}
+              {dateIfaPl && dateIfaAct ? (
+                <Card>
+                  <Card.Title> I . F . A </Card.Title>
+                  <Card.Divider />
                   <View>
-                    <Text
-                      style={{
-                        paddingBottom: 8,
-                        backgroundColor: "white",
-                        fontWeight: "bold",
-                        textAlign: "center",
-                      }}
-                    >
-                      I . F . A
-                    </Text>
-
-                    <VictoryChart>
-                      <VictoryBar data={dataIFA.a} />
-                      <VictoryBar data={dataIFA.b} />
-                      <VictoryBar
-                        data={dataIFA.planned}
-                        style={{
-                          data: { fill: "#2E58BF", strokeWidth: 30 },
-                          paddingLeft: 10,
-                        }}
-                      />
-                      <VictoryBar
-                        data={dataIFA.actual}
-                        style={{
-                          data: { fill: "#F00", strokeWidth: 30 },
-                        }}
-                      />
-                      <VictoryBar data={dataIFA.c} />
-                      <VictoryBar data={dataIFA.d} />
-                    </VictoryChart>
+                    <View style={{ width: 300, height: 250 }}>
+                      <View>
+                        <VictoryChart>
+                          <VictoryGroup offset={60}>
+                            <VictoryBar
+                              data={dataIFA.planned}
+                              style={{
+                                data: { fill: "#008DDE", strokeWidth: 7 },
+                                paddingLeft: 10,
+                              }}
+                            />
+                            <VictoryBar
+                              data={dataIFA.actual}
+                              style={{
+                                data: { fill: "#F00", strokeWidth: 7 },
+                              }}
+                            />
+                          </VictoryGroup>
+                          <VictoryLegend
+                            x={Dimensions.get("screen").width / 2 - 50}
+                            orientation="horizontal"
+                            gutter={20}
+                            //title="Legend"
+                            centerTitle
+                            style={{
+                              marginBottom: 20,
+                              paddingLeft: 20,
+                            }}
+                            data={[
+                              {
+                                name: `${dateIfaPl} Planned`,
+                                symbol: { fill: "#008DDE" },
+                              },
+                              {
+                                name: `${dateIfaAct} Actual`,
+                                symbol: { fill: "#F00" },
+                              },
+                            ]}
+                          />
+                        </VictoryChart>
+                      </View>
+                    </View>
+                    {/* <PieChart
+                      data={IFAdata}
+                      width={screenWidth}
+                      height={210}
+                      chartConfig={chartConfig}
+                      accessor={"population"}
+                      backgroundColor={"transparent"}
+                      paddingLeft={"15"}
+                      center={[5, 5]}
+                      absolute
+                    /> */}
                   </View>
-                </View>
-                <PieChart
-                  data={IFAdata}
-                  width={screenWidth}
-                  height={210}
-                  chartConfig={chartConfig}
-                  accessor={"population"}
-                  backgroundColor={"transparent"}
-                  paddingLeft={"15"}
-                  center={[5, 5]}
-                  absolute
-                />
-              </View>
-              <View
+                </Card>
+              ) : (
+                <Card>
+                  <Card.Title> I . F . A </Card.Title>
+                  <Card.Divider />
+                  <Text
+                    style={{
+                      paddingBottom: 8,
+                      backgroundColor: "white",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      color: "#f00",
+                    }}
+                  >
+                    Sorry no date added before {UpdatedDate}
+                  </Text>
+                </Card>
+              )}
+              {/* <View
                 style={{
                   borderBottomWidth: 2,
                   borderColor: "#ddd",
                   marginTop: 10,
                   marginBottom: 30,
                 }}
-              ></View>
-              <View>
-                <View style={{ width: 300, height: 300 }}>
-                  <View>
-                    <Text
-                      style={{
-                        paddingBottom: 8,
-                        backgroundColor: "white",
-                        fontWeight: "bold",
-                        textAlign: "center",
-                      }}
-                    >
-                      I . F . C
-                    </Text>
+              ></View> */}
 
-                    <VictoryChart>
-                      <VictoryBar data={dataIFC.a} />
-                      <VictoryBar data={dataIFC.b} />
-                      <VictoryBar
-                        data={dataIFC.planned}
-                        style={{
-                          data: { fill: "#2E58BF", strokeWidth: 30 },
-                          paddingLeft: 10,
-                        }}
-                      />
-                      <VictoryBar
-                        data={dataIFC.actual}
-                        style={{
-                          data: { fill: "#F00", strokeWidth: 30 },
-                        }}
-                      />
-                      <VictoryBar data={dataIFC.c} />
-                      <VictoryBar data={dataIFC.d} />
-                    </VictoryChart>
+              {dateIfcAct && dateIfcPl ? (
+                <Card>
+                  <Card.Title> I . F . C </Card.Title>
+                  <Card.Divider />
+                  <View>
+                    <View style={{ width: 300, height: 250 }}>
+                      <View>
+                        <VictoryChart>
+                          <VictoryGroup offset={60}>
+                            <VictoryBar
+                              data={dataIFC.planned}
+                              style={{
+                                data: { fill: "#008DDE", strokeWidth: 7 },
+                                paddingLeft: 10,
+                              }}
+                            />
+                            <VictoryBar
+                              data={dataIFC.actual}
+                              style={{
+                                data: { fill: "#F00", strokeWidth: 7 },
+                              }}
+                            />
+                          </VictoryGroup>
+                          <VictoryLegend
+                            x={Dimensions.get("screen").width / 2 - 50}
+                            orientation="horizontal"
+                            gutter={20}
+                            //title="Legend"
+                            centerTitle
+                            style={{
+                              marginBottom: 20,
+                              paddingLeft: 20,
+                            }}
+                            data={[
+                              {
+                                name: `${dateIfcPl} Planned`,
+                                symbol: { fill: "#008DDE" },
+                              },
+                              {
+                                name: `${dateIfcAct} Actual`,
+                                symbol: { fill: "#F00" },
+                              },
+                            ]}
+                          />
+                        </VictoryChart>
+                      </View>
+                    </View>
+                    {/* <PieChart
+                      data={IFCdata}
+                      width={screenWidth}
+                      height={210}
+                      chartConfig={chartConfig}
+                      accessor={"population"}
+                      backgroundColor={"transparent"}
+                      paddingLeft={"15"}
+                      center={[5, 5]}
+                      absolute
+                    /> */}
                   </View>
-                </View>
-                <PieChart
-                  data={IFCdata}
-                  width={screenWidth}
-                  height={210}
-                  chartConfig={chartConfig}
-                  accessor={"population"}
-                  backgroundColor={"transparent"}
-                  paddingLeft={"15"}
-                  center={[5, 5]}
-                  absolute
-                />
-              </View>
+                </Card>
+              ) : (
+                <Card>
+                  <Card.Title> I . F . C </Card.Title>
+                  <Card.Divider />
+                  <Text
+                    style={{
+                      paddingBottom: 8,
+                      backgroundColor: "white",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      color: "#f00",
+                    }}
+                  >
+                    Sorry no date added before {UpdatedDate}
+                  </Text>
+                </Card>
+              )}
             </View>
           </View>
         ) : null}
@@ -845,383 +1020,543 @@ const ProjectDetail = (props) => {
                 ></View>
               </View>
             ) : null}
-            <Text
-              style={{
-                textAlign: "center",
-                marginTop: 2,
-                backgroundColor: "#ffff",
-                fontSize: 20,
-                color: "#f00",
-                marginTop: 10,
-              }}
-            >
-              {" "}
-              Procurement_Trucking_Register
-            </Text>
-            <View
-              style={{
-                borderBottomWidth: 2,
-                borderColor: "#ddd",
-                marginTop: 10,
-                marginBottom: 30,
-              }}
-            ></View>
-            <Text
-              style={{
-                paddingBottom: 30,
-                backgroundColor: "white",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              R . F . Q . Issue
-            </Text>
-            <View style={{ width: 300, height: 300 }}>
-              <View>
-                <VictoryChart>
-                  <VictoryBar data={dataRFQ.a} />
-                  <VictoryBar data={dataRFQ.b} />
-                  <VictoryBar
-                    data={dataRFQ.planned}
-                    style={{
-                      data: { fill: "#2E58BF", strokeWidth: 20 },
-                      paddingLeft: 10,
-                    }}
-                  />
-                  <VictoryBar
-                    data={dataRFQ.actual}
-                    style={{
-                      data: { fill: "#F00", strokeWidth: 20 },
-                    }}
-                  />
-                  <VictoryBar data={dataRFQ.c} />
-                  <VictoryBar data={dataRFQ.d} />
-                </VictoryChart>
-              </View>
-            </View>
-            <PieChart
-              data={RFQdata}
-              width={screenWidth}
-              height={220}
-              chartConfig={chartConfig}
-              accessor={"population"}
-              backgroundColor={"transparent"}
-              paddingLeft={"15"}
-              center={[5, 5]}
-              absolute
-            />
-            <View
-              style={{
-                borderBottomWidth: 2,
-                borderColor: "#ddd",
-                marginTop: 10,
-                marginBottom: 30,
-              }}
-            ></View>
-            <Text
-              style={{
-                paddingBottom: 30,
-                backgroundColor: "white",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              Technical Commercial Evalution
-            </Text>
-            <View style={{ width: 300, height: 300 }}>
-              <View>
-                <VictoryChart>
-                  <VictoryBar data={dataTEC.a} />
-                  <VictoryBar data={dataTEC.b} />
-                  <VictoryBar
-                    data={dataTEC.planned}
-                    style={{
-                      data: { fill: "#2E58BF", strokeWidth: 20 },
-                      paddingLeft: 10,
-                    }}
-                  />
-                  <VictoryBar
-                    data={dataTEC.actual}
-                    style={{
-                      data: { fill: "#F00", strokeWidth: 20 },
-                    }}
-                  />
-                  <VictoryBar data={dataTEC.c} />
-                  <VictoryBar data={dataTEC.d} />
-                </VictoryChart>
-              </View>
-            </View>
-            <PieChart
-              data={TECdata}
-              width={screenWidth}
-              height={220}
-              chartConfig={chartConfig}
-              accessor={"population"}
-              backgroundColor={"transparent"}
-              paddingLeft={"15"}
-              center={[5, 5]}
-              absolute
-            />
-            <View
-              style={{
-                borderBottomWidth: 2,
-                borderColor: "#ddd",
-                marginTop: 10,
-                marginBottom: 30,
-              }}
-            ></View>
-            <Text
-              style={{
-                paddingBottom: 30,
-                backgroundColor: "white",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              Purchased.Order.Status
-            </Text>
-            <View style={{ width: 300, height: 300 }}>
-              <View>
-                <VictoryChart>
-                  <VictoryBar data={dataPOS.a} />
-                  <VictoryBar data={dataPOS.b} />
-                  <VictoryBar
-                    data={dataPOS.planned}
-                    style={{
-                      data: { fill: "#2E58BF", strokeWidth: 20 },
-                      paddingLeft: 10,
-                    }}
-                  />
-                  <VictoryBar
-                    data={dataPOS.actual}
-                    style={{
-                      data: { fill: "#F00", strokeWidth: 20 },
-                    }}
-                  />
-                  <VictoryBar data={dataPOS.c} />
-                  <VictoryBar data={dataPOS.d} />
-                </VictoryChart>
-              </View>
-            </View>
-            <PieChart
-              data={POSdata}
-              width={screenWidth}
-              height={220}
-              chartConfig={chartConfig}
-              accessor={"population"}
-              backgroundColor={"transparent"}
-              paddingLeft={"15"}
-              center={[5, 5]}
-              absolute
-            />
-            <View
-              style={{
-                borderBottomWidth: 2,
-                borderColor: "#ddd",
-                marginTop: 10,
-                marginBottom: 30,
-              }}
-            ></View>
-            <Text
-              style={{
-                textAlign: "center",
-                marginTop: 2,
-                backgroundColor: "#ffff",
-                fontSize: 20,
-                color: "#f00",
-              }}
-            >
-              Shipment_Trucking_Register
-            </Text>
-            <View
-              style={{
-                borderBottomWidth: 2,
-                borderColor: "#ddd",
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-            ></View>
-            <View style={{ width: 300, height: 300 }}>
-              <View>
-                <VictoryChart>
-                  <VictoryBar data={data_STR.a} />
-                  <VictoryBar data={data_STR.b} />
-                  <VictoryBar
-                    data={data_STR.planned}
-                    style={{
-                      data: { fill: "#2E58BF", strokeWidth: 20 },
-                      paddingLeft: 10,
-                    }}
-                  />
-                  <VictoryBar
-                    data={data_STR.actual}
-                    style={{
-                      data: { fill: "#F00", strokeWidth: 20 },
-                    }}
-                  />
-                  <VictoryBar data={data_STR.c} />
-                  <VictoryBar data={data_STR.d} />
-                </VictoryChart>
-              </View>
-            </View>
-            <PieChart
-              data={STR_data}
-              width={screenWidth}
-              height={220}
-              chartConfig={chartConfig}
-              accessor={"population"}
-              backgroundColor={"transparent"}
-              paddingLeft={"15"}
-              center={[5, 5]}
-              absolute
-            />
+
+            <Card>
+              <Text
+                style={{
+                  textAlign: "center",
+                  marginTop: 10,
+                }}
+                h3
+              >
+                {" "}
+                P . T . R
+              </Text>
+            </Card>
+
+            {dateRfqAct && dateRfqPl ? (
+              <Card>
+                <Card.Title> R . F . Q . Issue </Card.Title>
+                <Card.Divider />
+                <View style={{ width: 300, height: 250 }}>
+                  <View>
+                    <VictoryChart>
+                      <VictoryGroup offset={60}>
+                        <VictoryBar
+                          data={dataRFQ.planned}
+                          style={{
+                            data: { fill: "#008DDE", strokeWidth: 7 },
+                            paddingLeft: 10,
+                          }}
+                        />
+                        <VictoryBar
+                          data={dataRFQ.actual}
+                          style={{
+                            data: { fill: "#F00", strokeWidth: 7 },
+                          }}
+                        />
+                      </VictoryGroup>
+                      <VictoryLegend
+                        x={Dimensions.get("screen").width / 2 - 50}
+                        orientation="horizontal"
+                        gutter={20}
+                        //title="Legend"
+                        centerTitle
+                        style={{
+                          marginBottom: 20,
+                          paddingLeft: 20,
+                        }}
+                        data={[
+                          {
+                            name: `${dateRfqPl} Planned`,
+                            symbol: { fill: "#008DDE" },
+                          },
+                          {
+                            name: `${dateRfqAct} Actual`,
+                            symbol: { fill: "#F00" },
+                          },
+                        ]}
+                      />
+                    </VictoryChart>
+                  </View>
+                </View>
+                {/* <PieChart
+                  data={RFQdata}
+                  width={screenWidth}
+                  height={220}
+                  chartConfig={chartConfig}
+                  accessor={"population"}
+                  backgroundColor={"transparent"}
+                  paddingLeft={"15"}
+                  center={[5, 5]}
+                  absolute
+                /> */}
+              </Card>
+            ) : (
+              <Card>
+                <Text
+                  style={{
+                    paddingBottom: 8,
+                    backgroundColor: "white",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    color: "#f00",
+                  }}
+                >
+                  Sorry no date added before {UpdatedDate}
+                </Text>
+              </Card>
+            )}
+            {dateTecPl && dateTecAct ? (
+              <Card>
+                <Card.Title> Technical Commercial Evalution </Card.Title>
+                <Card.Divider />
+                <View style={{ width: 300, height: 250 }}>
+                  <View>
+                    <VictoryChart>
+                      <VictoryGroup offset={60}>
+                        <VictoryBar
+                          data={dataTEC.planned}
+                          style={{
+                            data: { fill: "#008DDE", strokeWidth: 7 },
+                            paddingLeft: 10,
+                          }}
+                        />
+                        <VictoryBar
+                          data={dataTEC.actual}
+                          style={{
+                            data: { fill: "#F00", strokeWidth: 7 },
+                          }}
+                        />
+                      </VictoryGroup>
+                      <VictoryLegend
+                        x={Dimensions.get("screen").width / 2 - 50}
+                        orientation="horizontal"
+                        gutter={20}
+                        //title="Legend"
+                        centerTitle
+                        style={{
+                          marginBottom: 20,
+                          paddingLeft: 20,
+                        }}
+                        data={[
+                          {
+                            name: `${dateTecPl} Planned`,
+                            symbol: { fill: "#008DDE" },
+                          },
+                          {
+                            name: `${dateTecAct} Actual`,
+                            symbol: { fill: "#F00" },
+                          },
+                        ]}
+                      />
+                    </VictoryChart>
+                  </View>
+                </View>
+                {/* <PieChart
+                  data={TECdata}
+                  width={screenWidth}
+                  height={220}
+                  chartConfig={chartConfig}
+                  accessor={"population"}
+                  backgroundColor={"transparent"}
+                  paddingLeft={"15"}
+                  center={[5, 5]}
+                  absolute
+                /> */}
+              </Card>
+            ) : (
+              <Card>
+                <Text
+                  style={{
+                    paddingBottom: 8,
+                    backgroundColor: "white",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    color: "#f00",
+                  }}
+                >
+                  Sorry no date added before {UpdatedDate}
+                </Text>
+              </Card>
+            )}
+            {datePosAct && datePosPl ? (
+              <Card>
+                <Card.Title> Purchased.Order.Status </Card.Title>
+                <Card.Divider />
+                <View style={{ width: 300, height: 250 }}>
+                  <View>
+                    <VictoryChart>
+                      <VictoryGroup offset={60}>
+                        <VictoryBar
+                          data={dataPOS.planned}
+                          style={{
+                            data: { fill: "#008DDE", strokeWidth: 7 },
+                            paddingLeft: 10,
+                          }}
+                        />
+                        <VictoryBar
+                          data={dataPOS.actual}
+                          style={{
+                            data: { fill: "#F00", strokeWidth: 7 },
+                          }}
+                        />
+                      </VictoryGroup>
+                      <VictoryLegend
+                        x={Dimensions.get("screen").width / 2 - 50}
+                        orientation="horizontal"
+                        gutter={20}
+                        //title="Legend"
+                        centerTitle
+                        style={{
+                          marginBottom: 20,
+                          paddingLeft: 20,
+                        }}
+                        data={[
+                          {
+                            name: `${datePosPl} Planned`,
+                            symbol: { fill: "#008DDE" },
+                          },
+                          {
+                            name: `${datePosAct} Actual`,
+                            symbol: { fill: "#F00" },
+                          },
+                        ]}
+                      />
+                    </VictoryChart>
+                  </View>
+                </View>
+                {/* <PieChart
+                  data={POSdata}
+                  width={screenWidth}
+                  height={220}
+                  chartConfig={chartConfig}
+                  accessor={"population"}
+                  backgroundColor={"transparent"}
+                  paddingLeft={"15"}
+                  center={[5, 5]}
+                  absolute
+                /> */}
+              </Card>
+            ) : (
+              <Card>
+                <Text
+                  style={{
+                    paddingBottom: 8,
+                    backgroundColor: "white",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    color: "#f00",
+                  }}
+                >
+                  Sorry no date added before {UpdatedDate}
+                </Text>
+              </Card>
+            )}
+
+            <Card>
+              <Text
+                style={{
+                  textAlign: "center",
+                  marginTop: 10,
+                }}
+                h4
+              >
+                S . T . R
+              </Text>
+            </Card>
+            {ActAta && plEta ? (
+              <Card>
+                <View style={{ width: 300, height: 250 }}>
+                  <View>
+                    <VictoryChart>
+                      <VictoryGroup offset={60}>
+                        <VictoryBar
+                          data={data_STR.planned}
+                          style={{
+                            data: { fill: "#008DDE", strokeWidth: 7 },
+                            paddingLeft: 10,
+                          }}
+                        />
+                        <VictoryBar
+                          data={data_STR.actual}
+                          style={{
+                            data: { fill: "#F00", strokeWidth: 7 },
+                          }}
+                        />
+                      </VictoryGroup>
+                      <VictoryLegend
+                        x={Dimensions.get("screen").width / 2 - 50}
+                        orientation="horizontal"
+                        gutter={20}
+                        //title="Legend"
+                        centerTitle
+                        style={{
+                          marginBottom: 20,
+                          paddingLeft: 20,
+                        }}
+                        data={[
+                          {
+                            name: `${plEta} Planned`,
+                            symbol: { fill: "#008DDE" },
+                          },
+                          {
+                            name: `${ActAta} Actual`,
+                            symbol: { fill: "#F00" },
+                          },
+                        ]}
+                      />
+                    </VictoryChart>
+                  </View>
+                </View>
+                {/* <PieChart
+                  data={STR_data}
+                  width={screenWidth}
+                  height={220}
+                  chartConfig={chartConfig}
+                  accessor={"population"}
+                  backgroundColor={"transparent"}
+                  paddingLeft={"15"}
+                  center={[5, 5]}
+                  absolute
+                /> */}
+              </Card>
+            ) : (
+              <Card>
+                <Text
+                  style={{
+                    paddingBottom: 8,
+                    backgroundColor: "white",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    color: "#f00",
+                  }}
+                >
+                  Sorry no date added before {UpdatedDate}
+                </Text>
+              </Card>
+            )}
+
             <View>
-              <View
-                style={{
-                  borderBottomWidth: 2,
-                  borderColor: "#ddd",
-                  marginTop: 10,
-                  marginBottom: 30,
-                }}
-              ></View>
-              <Text
-                style={{
-                  textAlign: "center",
-                  marginTop: 2,
-                  backgroundColor: "#ffff",
-                  fontSize: 20,
-                  color: "#f00",
-                }}
-              >
-                Expediting_Trucker_Register
-              </Text>
-              <View
-                style={{
-                  borderBottomWidth: 2,
-                  borderColor: "#ddd",
-                  marginTop: 10,
-                  marginBottom: 10,
-                }}
-              ></View>
-              <Text
-                style={{
-                  paddingBottom: 30,
-                  backgroundColor: "white",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                INSPECTION
-              </Text>
+              <Card>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    marginTop: 10,
+                  }}
+                  h4
+                >
+                  E . T . R
+                </Text>
+              </Card>
+              {plInspection && factInspection ? (
+                <Card>
+                  <Card.Title> INSPECTION </Card.Title>
+                  <Card.Divider />
+                  <View style={{ width: 300, height: 250 }}>
+                    <View>
+                      <VictoryChart>
+                        <VictoryGroup offset={60}>
+                          <VictoryBar
+                            data={data_INSPECTION.planned}
+                            style={{
+                              data: { fill: "#008DDE", strokeWidth: 7 },
+                              paddingLeft: 10,
+                            }}
+                          />
+                          <VictoryBar
+                            data={data_INSPECTION.actual}
+                            style={{
+                              data: { fill: "#F00", strokeWidth: 7 },
+                            }}
+                          />
+                          <VictoryLegend
+                            x={Dimensions.get("screen").width / 2 - 50}
+                            orientation="horizontal"
+                            gutter={20}
+                            //title="Legend"
+                            centerTitle
+                            style={{
+                              marginBottom: 20,
+                              paddingLeft: 20,
+                            }}
+                            data={[
+                              {
+                                name: `${plInspection} Planned`,
+                                symbol: { fill: "#008DDE" },
+                              },
+                              {
+                                name: `${factInspection} Actual`,
+                                symbol: { fill: "#F00" },
+                              },
+                            ]}
+                          />
+                        </VictoryGroup>
+                      </VictoryChart>
+                    </View>
+                  </View>
+                  {/* <PieChart
+                    data={INSPECTION_data}
+                    width={screenWidth}
+                    height={220}
+                    chartConfig={chartConfig}
+                    accessor={"population"}
+                    backgroundColor={"transparent"}
+                    paddingLeft={"15"}
+                    center={[5, 5]}
+                    absolute
+                  /> */}
+                </Card>
+              ) : (
+                <Card>
+                  <Text
+                    style={{
+                      paddingBottom: 8,
+                      backgroundColor: "white",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      color: "#f00",
+                    }}
+                  >
+                    Sorry no date added before {UpdatedDate}
+                  </Text>
+                </Card>
+              )}
 
-              <View style={{ width: 300, height: 300 }}>
-                <View>
-                  <VictoryChart>
-                    <VictoryBar data={data_INSPECTION.a} />
-                    <VictoryBar data={data_INSPECTION.b} />
-                    <VictoryBar
-                      data={data_INSPECTION.planned}
-                      style={{
-                        data: { fill: "#2E58BF", strokeWidth: 20 },
-                        paddingLeft: 10,
-                      }}
-                    />
-                    <VictoryBar
-                      data={data_INSPECTION.actual}
-                      style={{
-                        data: { fill: "#F00", strokeWidth: 20 },
-                      }}
-                    />
-                    <VictoryBar data={data_INSPECTION.c} />
-                    <VictoryBar data={data_INSPECTION.d} />
-                  </VictoryChart>
-                </View>
-              </View>
-              <PieChart
-                data={INSPECTION_data}
-                width={screenWidth}
-                height={220}
-                chartConfig={chartConfig}
-                accessor={"population"}
-                backgroundColor={"transparent"}
-                paddingLeft={"15"}
-                center={[5, 5]}
-                absolute
-              />
-              <View
-                style={{
-                  borderBottomWidth: 2,
-                  borderColor: "#ddd",
-                  marginTop: 10,
-                  marginBottom: 10,
-                }}
-              ></View>
-              <Text
-                style={{
-                  paddingBottom: 30,
-                  backgroundColor: "white",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                F . O . B
-              </Text>
-
-              <View style={{ width: 300, height: 300 }}>
-                <View>
-                  <VictoryChart>
-                    <VictoryBar data={data_FOB.a} />
-                    <VictoryBar data={data_FOB.b} />
-                    <VictoryBar
-                      data={data_FOB.planned}
-                      style={{
-                        data: { fill: "#2E58BF", strokeWidth: 20 },
-                        paddingLeft: 10,
-                      }}
-                    />
-                    <VictoryBar
-                      data={data_FOB.actual}
-                      style={{
-                        data: { fill: "#F00", strokeWidth: 20 },
-                      }}
-                    />
-                    <VictoryBar data={data_FOB.c} />
-                    <VictoryBar data={data_FOB.d} />
-                  </VictoryChart>
-                </View>
-              </View>
-              <PieChart
-                data={FOB_data}
-                width={screenWidth}
-                height={220}
-                chartConfig={chartConfig}
-                accessor={"population"}
-                backgroundColor={"transparent"}
-                paddingLeft={"15"}
-                center={[5, 5]}
-                absolute
-              />
+              {plFob && factFob ? (
+                <Card>
+                  <Card.Title> F . O . B </Card.Title>
+                  <Card.Divider />
+                  <View style={{ width: 300, height: 250 }}>
+                    <View>
+                      <VictoryChart>
+                        <VictoryGroup offset={60}>
+                          <VictoryBar
+                            data={data_FOB.planned}
+                            style={{
+                              data: { fill: "#008DDE", strokeWidth: 7 },
+                              paddingLeft: 10,
+                            }}
+                          />
+                          <VictoryBar
+                            data={data_FOB.actual}
+                            style={{
+                              data: { fill: "#F00", strokeWidth: 7 },
+                            }}
+                          />
+                        </VictoryGroup>
+                        <VictoryLegend
+                          x={Dimensions.get("screen").width / 2 - 50}
+                          orientation="horizontal"
+                          gutter={20}
+                          //title="Legend"
+                          centerTitle
+                          style={{
+                            marginBottom: 20,
+                            paddingLeft: 20,
+                          }}
+                          data={[
+                            {
+                              name: `${plFob} Planned`,
+                              symbol: { fill: "#008DDE" },
+                            },
+                            {
+                              name: `${factFob} Actual`,
+                              symbol: { fill: "#F00" },
+                            },
+                          ]}
+                        />
+                      </VictoryChart>
+                    </View>
+                  </View>
+                  {/* <PieChart
+                    data={FOB_data}
+                    width={screenWidth}
+                    height={220}
+                    chartConfig={chartConfig}
+                    accessor={"population"}
+                    backgroundColor={"transparent"}
+                    paddingLeft={"15"}
+                    center={[5, 5]}
+                    absolute
+                  /> */}
+                </Card>
+              ) : (
+                <Card>
+                  <Text
+                    style={{
+                      paddingBottom: 8,
+                      backgroundColor: "white",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      color: "#f00",
+                    }}
+                  >
+                    Sorry no date added before {UpdatedDate}
+                  </Text>
+                </Card>
+              )}
             </View>
           </View>
         ) : null}
         {state.params.Disipline === "Construction Progress" ? (
           <View>
             {" "}
+            {UpdatedDate ? (
+              <View>
+                <Text style={styles.UpDate}>
+                  {" "}
+                  Updated Date : <Text> {UpdatedDate} </Text>
+                </Text>
+                <View
+                  style={{
+                    borderBottomWidth: 2,
+                    borderColor: "#ddd",
+                    marginTop: 5,
+                    marginBottom: 30,
+                  }}
+                ></View>
+              </View>
+            ) : null}
             <View>
-              <Text style={styles.UpDate}>
-                {" "}
-                Updated Date : <Text> {UpdatedDate}</Text>
-              </Text>
-              <View
-                style={{
-                  borderBottomWidth: 2,
-                  borderColor: "#ddd",
-                  marginTop: 5,
-                  marginBottom: 30,
-                }}
-              ></View>
-            </View>{" "}
-            Nestana Fi MSADAK !!!!!!!!!!
+              {Object.values(dataType).map((dataTypes) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Type_Construction", {
+                      data: dataTypes,
+                      UpdatedDate: UpdatedDate,
+                    })
+                  }
+                  style={{
+                    backgroundColor: "#fff",
+                    marginTop: 20,
+                    marginBottom: 3,
+                  }}
+                >
+                  <View>
+                    {" "}
+                    <Text
+                      style={{
+                        fontSize: 17,
+                        textAlign: "left",
+                        display: "flex",
+                        marginTop: 10,
+                        backgroundColor: "#f5fcff",
+                        borderBottomWidth: 1,
+                        borderColor: "#ddd",
+                        height: 50,
+                        paddingLeft: 50,
+                        color: "#2DAAF1",
+                        marginBottom: 20,
+                      }}
+                    >
+                      {" "}
+                      {dataTypes.discipline}{" "}
+                    </Text>{" "}
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
         ) : null}
       </View>

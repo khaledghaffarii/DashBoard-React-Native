@@ -4,6 +4,8 @@ import { PieChart } from "react-native-chart-kit";
 import { Dimensions, View, StyleSheet, Picker } from "react-native";
 import { VictoryChart, VictoryBar } from "../Victory";
 
+
+
 const Master_Document = () => {
   const [index, setIndex] = React.useState(0);
   const [selectedValue, setSelectedValue] = useState("java");
@@ -49,22 +51,9 @@ const Master_Document = () => {
       >
         R . F . Q . Issue
       </Text>
-      <Text>
-        {" "}
-        <h4 style={{ textAlign: "center" }}> Number_Document_Register</h4>
-      </Text>
+      
 
-      <Picker
-        selectedValue={selectedValue}
-        style={{ height: 25, width: 150, marginLeft: 85 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-      >
-        <Picker.Item label="updated date" value="updated date" />
-        <Picker.Item label="12-03-2021" value="12-03-2021" />
-        <Picker.Item label="12-03-2021" value="13-05-2021" />
-        <Picker.Item label="12-03-2021" value="19-06-2021" />
-        <Picker.Item label="12-03-2021" value="12-12-2021" />
-      </Picker>
+      
       <View>
         <View style={styles.container}>
           <VictoryChart>
@@ -144,17 +133,7 @@ const Master_Document = () => {
       >
         Technical Commercial Evalution
       </Text>
-      <Text>
-        <h4 style={{ textAlign: "center" }}> Number_Document_Register </h4>
-      </Text>
-      <Picker
-        selectedValue={selectedValue}
-        style={{ height: 25, width: 150, marginLeft: 85 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-      >
-        <Picker.Item label="updated date" value="" />
-        <Picker.Item label="12-03-2021" value="" />
-      </Picker>
+     
       <View>
         <View style={styles.container}>
           <VictoryChart>
@@ -235,8 +214,8 @@ const Master_Document = () => {
       >
         Purchased.Order.Status
       </Text>
-      <Text>
-        <h4 style={{ textAlign: "center" }}> Number_Document_Register </h4>
+      <Text style={{ textAlign: "center" }} >
+       Number_Document_Register
       </Text>
       <Picker
         selectedValue={selectedValue}

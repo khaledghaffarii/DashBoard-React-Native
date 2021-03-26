@@ -3,20 +3,23 @@ import { Dimensions, View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { PieChart } from "react-native-chart-kit";
 import { VictoryChart, VictoryBar } from "../Victory";
-import { Button } from "react-native-elements";
+import { Button, Card } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
+import { VictoryAxis } from "victory-axis";
+import { VictoryLegend } from "victory-legend";
+import { VictoryGroup } from "victory-group";
 export default function Disipline(props) {
 
   const navigation = props.navigation;
   const { state } = props.navigation;
 
   console.log(state.params.UpdatedDate);
-  console.log(state.params.data["descdisci"]);
-
+  console.log(state.params.data["name"]);
+  console.log(state.params.data["id"]);
   //console.log("PROPS " + state.params.user);
-const UpdatedDate = state.params.UpdatedDate;
-  const screenWidth = Dimensions.get("window").width;
+  const UpdatedDate = state.params.UpdatedDate;
+  const screenWidth = Dimensions.get("window").width; 
+  
   const chartConfig = {
     backgroundGradientFrom: "white",
     backgroundGradientFromOpacity: 1,
@@ -44,27 +47,23 @@ const UpdatedDate = state.params.UpdatedDate;
   console.log(AvanceAct);
 
   const dataProgress = {
-    a: [{ x: 1, y: 0 }],
-    b: [{ x: 2, y: 0 }],
-    c: [{ x: 3, y: 0 }],
-    d: [{ x: 4, y: 0 }],
-    e: [{ x: 5, y: 0 }],
-    f: [{ x: 6, y: 0 }],
-    planned: [{ x: 2.5, y: AvancePl }],
-    actual: [{ x: 3.5, y: AvanceAct }],
+    
+    planned: [{ x: " ", y: AvancePl }],
+    actual: [{ x: " ", y: AvanceAct }],
+
   };
   const ProgressData = [
     {
-      name: "Current",
+      name: "%",
       population: AvanceAct,
       color: "#F00",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
     {
-      name: "Planned",
+      name: "%",
       population: AvancePl,
-      color: "#2E58BF",
+      color: "#008DDE",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
@@ -188,12 +187,13 @@ const UpdatedDate = state.params.UpdatedDate;
       });
 
       var avanceplan = project.map(function (projects) {
+        console.log(projects["avanceplan"]);
         return projects["avanceplan"];
       });
 
-      console.log(parseFloat(avanceplan));
+      console.log(avanceplan);
 
-      setAvancePl(parseFloat(avanceplan));
+      setAvancePl(avanceplan);
       setFinalDatePl(datedefinpla);
 
       ////////////////// Actual ////////////////////////
@@ -203,10 +203,11 @@ const UpdatedDate = state.params.UpdatedDate;
       });
 
       var avanceactu = project.map(function (projects) {
+        console.log(projects["avanceactu"]);
         return projects["avanceactu"];
       });
 
-      setAvanceAct(parseFloat(avanceactu));
+      setAvanceAct(avanceactu);
       setFinalDateAct(datedefinactu);
 
       ////////////////////////// Total_Float  ////////////////////////
@@ -292,33 +293,57 @@ const UpdatedDate = state.params.UpdatedDate;
             ></View>
           </View>
         ) : null}
-        <View style={styles.Header}>
-          <Text style={styles.TitleHeader}>
-            {state.params.data["descdisci"]}
-          </Text>
-        </View>
-        <View>
-          <VictoryChart>
-            <VictoryBar data={dataProgress.a} />
-            <VictoryBar data={dataProgress.b} />
-            <VictoryBar
-              data={dataProgress.planned}
-              style={{
-                data: { fill: "#2E58BF", strokeWidth: 30 },
-                paddingLeft: 10,
-              }}
-            />
-            <VictoryBar
-              data={dataProgress.actual}
-              style={{
-                data: { fill: "#F00", strokeWidth: 30 },
-              }}
-            />
-            <VictoryBar data={dataProgress.c} />
-            <VictoryBar data={dataProgress.d} />
-          </VictoryChart>
-        </View>
-        <View>
+        {}
+        <Card>
+          <View style={styles.Header}>
+            <Text style={styles.TitleHeader}>
+              <Card.Title>{state.params.data["name"]}</Card.Title>
+            </Text>
+          </View>
+          <View>
+            <VictoryChart>
+              {/* <VictoryBar data={dataProgress.a} />
+              <VictoryBar data={dataProgress.b} /> */}
+
+              <VictoryGroup offset={60}>
+                <VictoryBar
+                  data={dataProgress.planned}
+                  style={{
+                    data: { fill: "#008DDE", strokeWidth: 7 },
+                    paddingLeft: 10,
+                  }}
+                />
+                <VictoryBar
+                  data={dataProgress.actual}
+                  style={{
+                    data: { fill: "#F00", strokeWidth: 7 },
+                  }}
+                />
+              </VictoryGroup>
+              <VictoryLegend
+                x={Dimensions.get("screen").width / 2 - 50}
+                orientation="horizontal"
+                gutter={20}
+                //title="Legend"
+                centerTitle
+                style={{
+                  marginBottom: 20,
+                }}
+                data={[
+                  {
+                    name: `${AvancePl}% Planned`,
+                    symbol: { fill: "#008DDE"},
+                  },
+                  { name:`${AvanceAct}% Actual`, symbol: { fill: "#F00" } },
+                ]}
+              />
+              {/* <VictoryBar data={dataProgress.c} />
+              <VictoryBar data={dataProgress.d} /> */}
+            </VictoryChart>
+          </View>
+        </Card>
+
+        {/* <View>
           <PieChart
             data={ProgressData}
             width={screenWidth}
@@ -330,8 +355,8 @@ const UpdatedDate = state.params.UpdatedDate;
             center={[5, 5]}
             absolute
           />
-        </View>
-        <View>
+        </View> */}
+        <Card style={styles.blockDate}>
           <Text
             style={{
               fontWeight: "bold",
@@ -373,21 +398,21 @@ const UpdatedDate = state.params.UpdatedDate;
             {" "}
             Total Float :{" "}
             <Text style={{ marginLeft: 10, textAlign: "right" }}>
-              {TotalFloat} Jours
+              {TotalFloat} Days
             </Text>
           </Text>
-        </View>
+        </Card>
         <View>
-          {state.params.data["descdisci"] === "Engineering Progress" ||
-          state.params.data["descdisci"] === "procurement Progress" ||
-          state.params.data["descdisci"] === "Construction Progress" ? (
+          {state.params.data["name"] === "Engineering Progress" ||
+          state.params.data["name"] === "procurement Progress" ||
+          state.params.data["name"] === "Construction Progress" ? (
             <Button
-              style={{ marginTop: 15 }}
+              style={{ marginTop: 150 }}
               title="More details"
               onPress={() =>
                 navigation.navigate("Project_Details", {
                   UpdatedDate: UpdatedDate,
-                  Disipline: state.params.data["descdisci"],
+                  Disipline: state.params.data["name"],
                   key: state.params.data["MPROJECT_id"],
                 })
               }
@@ -399,6 +424,10 @@ const UpdatedDate = state.params.UpdatedDate;
   );
 }
 const styles = StyleSheet.create({
+  blockDate:{
+    marginTop:30,
+    marginBottom:150
+  },
   Header: {
     marginBottom: 50,
     borderBottomWidth: 1,
@@ -423,4 +452,4 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 });
-//navigation.getParam("descdisci"), navigation.getParam("descdisci");
+//navigation.getParam("name"), navigation.getParam("name");

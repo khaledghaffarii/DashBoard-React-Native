@@ -8,10 +8,13 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const results = await db
     .promise()
-    .query(`SELECT * FROM construction_dashboard`);
+    .query(
+      `SELECT * FROM construction_dashboard WHERE (MPROJECT_id)=` +
+        req.params.id
+    );
   console.log(results);
   res.status(200).send(results[0]);
 });

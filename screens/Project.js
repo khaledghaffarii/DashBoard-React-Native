@@ -1,34 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { BottomNavigation, Text, TextInput } from "react-native-paper";
-import {
-  Dimensions,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+import { Text, TextInput } from "react-native-paper";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Button } from "react-native-elements";
-import { Icon } from "react-native-elements";
-import projectShow from "./ProjectShow";
-// import {creatStackNavigator} from 'react-navigation-stack'
-// import {createAppContainer} from 'react-navigation';
-import Constants from "expo-constants"; 
+import { ListItem, Header , Input } from "react-native-elements";
 
-
-export default function Project({ navigation, props }) 
-{
-  
+export default function Project({ navigation }) {
   const [UpdatedDate, setUpdatedDate] = useState("");
   const [ShowDate, setShowDate] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [dataProject, setDataProject] = useState("");
-
-
+  const [validateLength, setValidateLength] = useState(false);
+  const [dateProject, setDateProject] = useState("");
   // const [updatedDate, setUpdatedDate] = useState("");
   // const { navigation, route } = props;
-  console.log(dataProject);
+  //console.log(dataProject);
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -44,6 +30,8 @@ export default function Project({ navigation, props })
   useEffect(() => {
     async function fetchData() {
       try {
+        //const res = await fetch("https://eppmdashboard.herokuapp.com/api/projects");
+
         const res = await fetch("https://127.0.0.1:3000/project");
         const project = await res.json();
         setDataProject(project);
@@ -60,76 +48,83 @@ export default function Project({ navigation, props })
         console.log(e);
       }
     }
-    callAPI();
+    async function fetchDateProject() {
 
+      const res = await fetch("https://localhost:3000/project");
+      const project = await res.json();
+
+      var datedebutactu = project.map(function (projects) {
+        return projects["datedebutactu"].slice(0, 10);
+      });
+
+      if (UpdatedDate) {
+        const filterDate = datedebutactu.filter(
+          (datedebutactus) => datedebutactus <= UpdatedDate
+        );
+
+        setDateProject(filterDate);
+      } else {
+        setDateProject(datedebutactu);
+      }
+    }
+
+    fetchDateProject();
+    callAPI();
   }, []);
-    //fetchData();
-    //  axios.get("https://127.0.0.1:3000/project").then((response) => {
-    //    console.log(response.data);
-    //    setDataProject(response.data);
-    //  });
+  //fetchData();
+  //  axios.get("https://127.0.0.1:3000/project").then((response) => {
+  //    console.log(response.data);
+  //    setDataProject(response.data);
+  //  });
 
   // console.log(dataProject);
   // //const { itemId } = route.params;
-   function HandleDateChange(e) {
-     setUpdatedDate(e.target.value);
-   }
-   function HandleShowDate() {
-     setShowDate(true);
-     if (!UpdatedDate) {
-       setShowDate(false);
-     }
+  function HandleDateChange(e) {
+    setUpdatedDate(e.target.value);
+    // if (UpdatedDate.length > 10) {
+    //   setValidateLength(true);
+    // } else setValidateLength(false);
+  }
+  function HandleShowDate() {
+    setShowDate(true);
+    if (!UpdatedDate) {
+      setShowDate(false);
+    }
     //if (finalDatePl < UpdatedDate) console.log(finalDatePl);
-   }
+  }
   return (
     <View style={styles.content}>
-      {/* <View style={styles.Header}>
-        <Text style={styles.title}>All_Project</Text>
-      </View> */}
-
-      {/* <View style={styles.searchSection}>
-        <Icon style={styles.searchIcon} name="search" size={20} color="#000" />
-        <TextInput
-          style={styles.input}
-          placeholder="Search ... "
-          onChange={(event) => {
-            setSearchTerm(event.target.value);
-          }}
-          underlineColorAndroid="transparent"
-        />
-      </View> */}
-
       <KeyboardAwareScrollView
         style={{ marginVertical: 40 }}
         showsVerticalScrollIndicator={false}
       >
         <View>
-          <TextInput
-            placeholderTextColor="#2daaf3 "
-            numeric
-            keyboardType={"numeric"}
-            style={styles.input}
-            placeholder=" Enter Date :  YYYY-MM-DD"
-            underlineColorAndroid="transparent"
-            onChange={HandleDateChange}
-            maxLength={10}
-          />
           <View>
-            <Button
-              title="Valider La Date"
-              type="clear"
-              style={{ textAlign: "left", marginTop: 15, marginRight: 185 }}
-              onPress={HandleShowDate}
-            />{" "}
-          </View>{" "}
-          {ShowDate && UpdatedDate ? (
-            <Text style={styles.UpDate}>
-              {" "}
-              Updated Date :<Text> {UpdatedDate} </Text>{" "}
-            </Text>
-          ) : null}
-        </View>
-        <View style={styles.content}>
+            {/* <TextInput
+              keyboardType={"numeric"}
+              style={styles.input}
+              placeholder=" Enter Date :  YYYY-MM-DD"
+              onChange={HandleDateChange}
+              //maxLength={10}
+              value={UpdatedDate}
+            /> */}
+            <Input
+              placeholder="Enter Date :  YYYY-MM-DD"
+              //rightIcon={{ type: "font-awesome", name: "chevron-right" }}
+              onChange={HandleDateChange}
+              value={UpdatedDate}
+            />
+            {validateLength ? (
+              <Text style={{ color: "#f00" }}>invalid date</Text>
+            ) : null}
+
+            {ShowDate && UpdatedDate ? (
+              <Text style={styles.UpDate}>
+                {" "}
+                Updated Date :<Text> {UpdatedDate} </Text>{" "}
+              </Text>
+            ) : null}
+          </View>
           {Object.values(dataProject)
             .filter((val) => {
               if (searchTerm == "") {
@@ -140,7 +135,7 @@ export default function Project({ navigation, props })
                 return val;
               }
             })
-            .map((dataProjects) => (
+            .map((dataProjects, i) => (
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("ProjectShow", {
@@ -148,11 +143,22 @@ export default function Project({ navigation, props })
                     UpdatedDate: UpdatedDate,
                   })
                 }
+                key={i}
               >
-                <Text style={styles.container}>
+                {/* <Text style={styles.container}> {dataProjects.name}</Text> */}
+                {/* <Text style={styles.container}>
                   {" "}
                   {dataProjects.projectname}
-                </Text>
+                </Text> */}
+                <ListItem key={i} bottomDivider>
+                  <ListItem.Content>
+                    <ListItem.Title>{dataProjects.projectname}</ListItem.Title>
+                    <ListItem.Subtitle>
+                      {dataProjects.datedefinactu.slice(0, 10)}
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
               </TouchableOpacity>
             ))}
         </View>
@@ -173,7 +179,7 @@ const styles = StyleSheet.create({
   },
   UpDate: {
     textAlign: "left",
-    marginBottom:50,
+    marginBottom: 50,
     marginLeft: 10,
     marginTop: 10,
     fontWeight: "bold",
@@ -181,7 +187,7 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: "#ffff",
-    marginBottom: 300,
+    paddingBottom: 10,
   },
   Header: {
     marginBottom: 100,
@@ -226,3 +232,23 @@ const styles = StyleSheet.create({
   },
 });
 //export default Project;
+
+{
+  /* <View style={styles.Header}>
+        <Text style={styles.title}>All_Project</Text>
+      </View> */
+}
+
+{
+  /* <View style={styles.searchSection}>
+        <Icon style={styles.searchIcon} name="search" size={20} color="#000" />
+        <TextInput
+          style={styles.input}
+          placeholder="Search ... "
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
+          underlineColorAndroid="transparent"
+        />
+      </View> */
+}
